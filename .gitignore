@@ -1,0 +1,16 @@
+# private stuff
+meta/*
+
+# python packaging
+build/*
+dist/*
+ipatok.egg-info/*
+.eggs/*
+
+# unit testing
+.coverage
+.hypothesis/*
+
+# development
+*.pyc
+*.swp
