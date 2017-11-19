@@ -2,7 +2,7 @@
 ipatok
 ======
 
-A simple IPA tokeniser, as simple as in::
+A simple IPA tokeniser, as simple as in:
 
 >>> from ipatok import tokenise
 >>> tokenise('ˈtiːt͡ʃə')
@@ -21,6 +21,8 @@ excluded from the output.
 By default the function raises a ``ValueError`` if the string does not conform
 to the `IPA spec`_ (the 2015 revision). Invoking it with ``strict=False`` makes
 it accept some common replacements such as ``g`` and ``ɫ``.
+
+``tokenize(string, strict=True)`` is an alias for the ``tokenise`` function.
 
 
 installation

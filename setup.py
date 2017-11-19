@@ -21,7 +21,7 @@ setup(
 	description = 'simple IPA tokeniser',
 	long_description = README,
 
-	# url = 'https://github.com/pavelsof/ipatok',
+	url = 'https://github.com/pavelsof/ipatok',
 
 	author = 'Pavel Sofroniev',
 	author_email = 'pavelsof@gmail.com',
