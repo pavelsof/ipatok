@@ -18,7 +18,7 @@ setup(
 	name = 'ipatok',
 	version = VERSION,
 
-	description = 'simple IPA tokeniser',
+	description = 'IPA tokeniser',
 	long_description = README,
 
 	url = 'https://github.com/pavelsof/ipatok',

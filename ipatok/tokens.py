@@ -9,7 +9,9 @@ def tokenise(string, strict=True):
 	Tokenises the given IPA string into a list of tokens. Raise ValueError if
 	the argument is not a valid IPA string.
 	"""
+	string = ''.join(string.strip().split())
 	string = unicodedata.normalize('NFD', string)
+
 	tokens = []
 
 	for index, char in enumerate(string):
@@ -33,7 +35,7 @@ def tokenise(string, strict=True):
 			tokens[-1] += char
 
 		else:
-			raise ValueError('Unrecognised char: {}'.format(char))
+			raise ValueError('Unrecognised char: {} ({})'.format(char, unicodedata.name(char)))
 
 	return tokens
 

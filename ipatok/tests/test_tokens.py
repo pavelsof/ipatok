@@ -13,6 +13,7 @@ class TokensTestCase(TestCase):
 		self.assertEqual(tokenise('lit͡sɛ'), ['l', 'i', 't͡s', 'ɛ'])
 		self.assertEqual(tokenise('t͡ʃɛʎust'), ['t͡ʃ', 'ɛ', 'ʎ', 'u', 's', 't'])
 		self.assertEqual(tokenise('dirʲa'), ['d', 'i', 'rʲ', 'a'])
+		self.assertEqual(tokenise('ut͡ʃa sɛ'), ['u', 't͡ʃ', 'a', 's', 'ɛ'])
 
 		self.assertEqual(tokenise('ˈd͡ʒɔɪ'), ['d͡ʒ', 'ɔ', 'ɪ'])
 		self.assertEqual(tokenise('ˈtiːt͡ʃə'), ['t', 'iː', 't͡ʃ', 'ə'])
@@ -21,7 +22,7 @@ class TokensTestCase(TestCase):
 		self.assertEqual(tokenise('miq͡χː'), ['m', 'i', 'q͡χː'])
 		self.assertEqual(tokenise('ʃːjeq͡χːʼjer'), ['ʃː', 'j', 'e', 'q͡χːʼ', 'j', 'e', 'r'])
 		self.assertEqual(tokenise('t͡ɬʼibil'), ['t͡ɬʼ', 'i', 'b', 'i', 'l'])
-		self.assertEqual(tokenise('ɬalkʼ', strict=False), ['ɬ', 'a', 'l', 'kʼ'])
+		self.assertEqual(tokenise('ɬalkʼ'), ['ɬ', 'a', 'l', 'kʼ'])
 
 	def test_tokenise_strictness(self):
 		with self.assertRaises(ValueError):
