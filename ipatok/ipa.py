@@ -21,6 +21,7 @@ class Chart:
 		self.letters = set()
 		self.tie_bars = set()
 		self.diacritics = set()
+		self.lengths = set()
 		self.suprasegmentals = set()
 
 	def load(self, file_path):
@@ -31,6 +32,7 @@ class Chart:
 			'# letters': self.letters,
 			'# tie bars': self.tie_bars,
 			'# diacritics': self.diacritics,
+			'# lengths': self.lengths,
 			'# suprasegmentals': self.suprasegmentals }
 
 		curr_section = None
@@ -83,6 +85,14 @@ def is_diacritic(char):
 	Check whether the given character is an IPA diacritic.
 	"""
 	return char in chart.diacritics
+
+
+@ensure_single_char
+def is_length(char):
+	"""
+	Check whether the given character is an IPA length marker.
+	"""
+	return char in chart.lengths
 
 
 @ensure_single_char

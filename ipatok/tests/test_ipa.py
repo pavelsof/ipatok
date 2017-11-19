@@ -1,6 +1,7 @@
 from unittest import TestCase, skip
 
-from ipatok import is_letter, is_tie_bar, is_diacritic, is_suprasegmental
+from ipatok.ipa import (
+	is_letter, is_tie_bar, is_diacritic, is_length, is_suprasegmental)
 
 
 
@@ -24,6 +25,12 @@ class IpaTestCase(TestCase):
 		self.assertTrue(is_diacritic('◌̃'[1]))
 		self.assertTrue(is_diacritic('◌̚'[1]))
 
+	def test_is_length(self):
+		self.assertTrue(is_length('ː'))
+		self.assertTrue(is_length('ˑ'))
+		self.assertTrue(is_length('◌̆'[1]))
+
 	def test_is_suprasegmental(self):
 		self.assertTrue(is_suprasegmental('ˈ'))
-		self.assertTrue(is_suprasegmental('ː'))
+		self.assertTrue(is_suprasegmental('◌̋'[1]))
+		self.assertTrue(is_suprasegmental('↘'))
