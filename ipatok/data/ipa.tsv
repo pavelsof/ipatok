@@ -69,7 +69,6 @@ h	vl glottal fricative
 ʄ	vd palatal implosive
 ɠ	vd velar implosive
 ʛ	vd uvular implosive
-ʼ	ejective diacritic
 
 ʍ	vl labial-velar fricative
 w	vd labial-velar approximant
@@ -111,11 +110,17 @@ o	close-mid back rounded vowel
 ɑ	open back unrounded vowel
 ɒ	open back rounded vowel
 
+# non-standard letters
+ɫ	l̴
+g	ɡ
+
 # tie bars
 ͡	tie bar (above)
 ͜	tie bar (below)
 
 # diacritics
+ʼ	ejective diacritic
+
 ̥	voiceless (under)
 ̊	voiceless (over)
 ̬	voiced

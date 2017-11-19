@@ -1,4 +1,4 @@
-from unittest import TestCase, skip
+from unittest import TestCase
 
 from ipatok.ipa import (
 	is_letter, is_tie_bar, is_diacritic, is_length, is_suprasegmental)
@@ -7,13 +7,13 @@ from ipatok.ipa import (
 
 class IpaTestCase(TestCase):
 
-	@skip
-	def test_assert_char(self):
-		pass
-
 	def test_is_letter(self):
 		self.assertTrue(is_letter('p'))
 		self.assertTrue(is_letter('ʘ'))
+
+	def test_is_letter_strictness(self):
+		self.assertFalse(is_letter('ɫ', strict=True))
+		self.assertTrue(is_letter('ɫ', strict=False))
 
 	def test_is_tie_bar(self):
 		self.assertTrue(is_tie_bar('◌͡'[1]))

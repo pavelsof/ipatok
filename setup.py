@@ -39,10 +39,9 @@ setup(
 	keywords = 'IPA tokeniser tokenizer',
 
 	packages = find_packages(),
-	package_data = {'ipatok': ['data/*', 'tests/fixtures/*']},
+	package_data = {'ipatok': ['data/*']},
 
 	install_requires = [],
 
 	test_suite = 'ipatok.tests'
-	# tests_require = ['hypothesis >= 3.5']
 )

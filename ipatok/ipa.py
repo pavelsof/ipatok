@@ -19,6 +19,7 @@ class Chart:
 		class of IPA symbols.
 		"""
 		self.letters = set()
+		self.non_letters = set()
 		self.tie_bars = set()
 		self.diacritics = set()
 		self.lengths = set()
@@ -30,6 +31,7 @@ class Chart:
 		"""
 		sections = {
 			'# letters': self.letters,
+			'# non-standard letters': self.non_letters,
 			'# tie bars': self.tie_bars,
 			'# diacritics': self.diacritics,
 			'# lengths': self.lengths,
@@ -68,7 +70,10 @@ def is_letter(char, strict=True):
 	"""
 	Check whether the given character is an IPA letter.
 	"""
-	return char in chart.letters
+	if strict:
+		return char in chart.letters
+	else:
+		return char in chart.letters or char in chart.non_letters
 
 
 @ensure_single_char
@@ -80,7 +85,7 @@ def is_tie_bar(char):
 
 
 @ensure_single_char
-def is_diacritic(char):
+def is_diacritic(char, strict=True):
 	"""
 	Check whether the given character is an IPA diacritic.
 	"""
