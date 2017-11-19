@@ -1,0 +1,181 @@
+# letters
+p	vl bilabial plosive
+b	vd bilabial plosive
+m	vd bilabial nasal
+ʙ	vd bilabial trill
+ɸ	vl bilabial fricative
+β	vd bilabial fricative
+ɱ	vd labiodental nasal
+ⱱ	vd labiodental flap
+f	vl labiodental fricative
+v	vd labiodental fricative
+ʋ	vd labiodental approximant
+t	vl alveolar plosive
+d	vd alveolar plosive
+n	vd alveolar nasal
+r	vd alveolar trill
+ɾ	vd alveolar tap
+θ	vl dental fricative
+ð	vd dental fricative
+s	vl alveolar fricative
+z	vd alveolar fricative
+ʃ	vl postalveolar fricative
+ʒ	vd postalveolar fricative
+ɬ	vl lateral alveolar fricative
+ɮ	vd lateral alveolar fricative
+ɹ	vd alveolar approximant
+l	vd lateral alveolar approximant
+ʈ	vl retroflex plosive
+ɖ	vd retroflex plosive
+ɳ	vd retroflex nasal
+ɽ	vd retroflex flap
+ʂ	vl retroflex fricative
+ʐ	vd retroflex fricative
+ɻ	vd retroflex approximant
+ɭ	vd retroflex lateral approximant
+c	vl palatal plosive
+ɟ	vd palatal plosive
+ɲ	vd palatal nasal
+ç	vl palatal fricative
+ʝ	vd palatal fricative
+j	vd palatal approximant
+ʎ	vd palatal lateral approximant
+k	vl velar plosive
+ɡ	vd velar plosive
+ŋ	vd velar nasal
+x	vl velar fricative
+ɣ	vd velar fricative
+ɰ	vd velar approximant
+ʟ	vd velar lateral approximant
+q	vl uvular plosive
+ɢ	vd uvular plosive
+ɴ	vd uvular nasal
+ʀ	vd uvular trill
+χ	vl uvular fricative
+ʁ	vd uvular fricative
+ħ	vl pharyngeal fricative
+ʕ	vd pharyngeal fricative
+ʔ	vl glottal plosive
+h	vl glottal fricative
+ɦ	vd glottal fricative
+
+ʘ	bilabial click
+ǀ	dental click
+ǃ	(post)alveolar click
+ǂ	palatoalveolar click
+ǁ	alveolar lateral click
+ɓ	vd bilabial implosive
+ɗ	vd dental/alveolar implosive
+ʄ	vd palatal implosive
+ɠ	vd velar implosive
+ʛ	vd uvular implosive
+ʼ	ejective diacritic
+
+ʍ	vl labial-velar fricative
+w	vd labial-velar approximant
+ɥ	vd labial-palatal approximant
+ʜ	vl epiglottal fricative
+ʢ	vd epiglottal fricative
+ʡ	vd epiglottal plosive
+ɕ	vl alveolo-palatal fricative
+ʑ	vd alveolo-palatal fricative
+ɺ	vd alveolar lateral flap
+ɧ	simultaneous ʃ and x
+
+i	close front unrounded vowel
+y	close front rounded vowel
+ɪ	lowered-close front unrounded vowel
+ʏ	lowered-close front rounded vowel
+e	close-mid front unrounded vowel
+ø	close-mid front rounded vowel
+ɛ	open-mid front unrounded vowel
+œ	open-mid front rounded vowel
+æ	raised-open front unrounded vowel
+a	open front unrounded vowel
+ɶ	open front rounded vowel
+ɨ	close central unrounded vowel
+ʉ	close central rounded vowel
+ɘ	close-mid central unrounded vowel
+ɵ	close-mid central rounded vowel
+ə	mid central unrounded vowel
+ɜ	open-mid central unrounded vowel
+ɞ	open-mid central rounded vowel
+ɐ	raised-open central unrounded vowel
+ɯ	close back unrounded vowel
+u	close back rounded vowel
+ʊ	lowered-close back rounded vowel
+ɤ	close-mid back unrounded vowel
+o	close-mid back rounded vowel
+ʌ	open-mid back unrounded vowel
+ɔ	open-mid back rounded vowel
+ɑ	open back unrounded vowel
+ɒ	open back rounded vowel
+
+# tie bars
+͡	tie bar (above)
+͜	tie bar (below)
+
+# diacritics
+̥	voiceless (under)
+̊	voiceless (over)
+̬	voiced
+ʰ	aspirated
+̹	more rounded
+̜	less rounded
+̟	advanced
+̠	retracted
+̈	centralized
+̽	mid-centralized
+̩	syllabic
+̯	non-syllabic
+˞	rhoticity
+̤	breathy voiced
+̰	creaky voiced
+̫	linguolabial
+ʷ	labialized
+ʲ	palatalized
+ˠ	velarized
+ˤ	pharyngealized
+̴	velarized or pharyngealized
+̝	raised
+̞	lowered
+̘	advanced tongue root
+̙	retracted tongue root
+̪	dental
+̺	apical
+̻	laminal
+̃	nasalized
+ⁿ	nasal release
+ˡ	lateral release
+̚	no audible release
+
+# suprasegmentals
+ˈ	primary stress
+ˌ	secondary stress
+ː	long
+ˑ	half-long
+̆	extra-short
+|	minor (foot) group
+||	major (intonational) group
+.	syllable break
+‿	linking (absence of a break)
+
+̋	extra-high tone (accent mark)
+˥	extra-high tone (Chao letter)
+́	high level tone (accent mark)
+˦	high leveltone (Chao letter)
+̄	mid level tone (accent mark)
+˧	mid level tone (Chao letter)
+̀	low level tone (accent mark)
+˨	lowlevel tone (Chao letter)
+̏	extra-low level tone (accent mark)
+˩	extra-low level tone (Chao letter)
+̌	rising contour tone (accent mark)
+̂	falling contour tone (accent mark)
+᷄	high rising contour tone (accent mark)
+᷅	low rising contour tone (accent mark)
+᷈	rising-falling contour tone (accent mark)
+ꜜ	downstep
+ꜛ	upstep
+↗	global rise
+↘	global fall

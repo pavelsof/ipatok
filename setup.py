@@ -2,8 +2,6 @@ import os.path
 
 from setuptools import setup, find_packages
 
-from ipatok import __version__
-
 
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
@@ -45,6 +43,6 @@ setup(
 
 	install_requires = [],
 
-	test_suite = 'ipalint.tests',
-	tests_require = ['hypothesis >= 3.5']
+	test_suite = 'ipatok.tests'
+	# tests_require = ['hypothesis >= 3.5']
 )
