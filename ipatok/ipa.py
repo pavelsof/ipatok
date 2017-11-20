@@ -1,5 +1,6 @@
 import functools
 import os.path
+import unicodedata
 
 
 """
@@ -22,6 +23,7 @@ class Chart:
 		self.non_letters = set()
 		self.tie_bars = set()
 		self.diacritics = set()
+		self.non_diacritics = set()
 		self.lengths = set()
 		self.suprasegmentals = set()
 
@@ -34,6 +36,7 @@ class Chart:
 			'# non-standard letters': self.non_letters,
 			'# tie bars': self.tie_bars,
 			'# diacritics': self.diacritics,
+			'# non-standard diacritics': self.non_diacritics,
 			'# lengths': self.lengths,
 			'# suprasegmentals': self.suprasegmentals }
 
@@ -89,7 +92,10 @@ def is_diacritic(char, strict=True):
 	"""
 	Check whether the given character is an IPA diacritic.
 	"""
-	return char in chart.diacritics
+	if strict:
+		return char in chart.diacritics
+	else:
+		return char in chart.diacritics or char in chart.non_diacritics
 
 
 @ensure_single_char
@@ -106,6 +112,15 @@ def is_suprasegmental(char):
 	Check whether the given character is an IPA suprasegmental.
 	"""
 	return char in chart.suprasegmentals
+
+
+def get_precomposed_chars():
+	"""
+	Return the set of IPA characters that are pre-composed.
+	"""
+	return set([
+		letter for letter in chart.letters
+		if unicodedata.normalize('NFD', letter) != letter ])
 
 
 """

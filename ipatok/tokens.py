@@ -4,14 +4,29 @@ from ipatok import ipa
 
 
 
+def normalise(string):
+	"""
+	Normalise the string by removing the whitespace and convert the characters
+	to Unicode's normal form NFD except for those that are pre-composed in IPA.
+	"""
+	string = ''.join(string.strip().split())
+	string = unicodedata.normalize('NFD', string)
+
+	for char_c in ipa.get_precomposed_chars():
+		char_d = unicodedata.normalize('NFD', char_c)
+		if char_d in string:
+			string = string.replace(char_d, char_c)
+
+	return string
+
+
+
 def tokenise(string, strict=True):
 	"""
 	Tokenises the given IPA string into a list of tokens. Raise ValueError if
 	the argument is not a valid IPA string.
 	"""
-	string = ''.join(string.strip().split())
-	string = unicodedata.normalize('NFD', string)
-
+	string = normalise(string)
 	tokens = []
 
 	for index, char in enumerate(string):

@@ -1,13 +1,17 @@
 from unittest import TestCase
 
-from ipatok.tokens import tokenise
+from ipatok.tokens import normalise, tokenise
 
 
 
 class TokensTestCase(TestCase):
 	"""
-	The IPA strings are sourced from NorthEuraLex (bul, eng, ava).
+	The IPA strings are sourced from NorthEuraLex (bul, eng, ava, deu).
 	"""
+
+	def test_normalise(self):
+		self.assertEqual(normalise('nɪçt'), 'nɪçt')  # ç in normal form C
+		self.assertEqual(normalise('nɪçt'), 'nɪçt')  # ç in normal form D
 
 	def test_tokenise(self):
 		self.assertEqual(tokenise('lit͡sɛ'), ['l', 'i', 't͡s', 'ɛ'])
@@ -23,6 +27,9 @@ class TokensTestCase(TestCase):
 		self.assertEqual(tokenise('ʃːjeq͡χːʼjer'), ['ʃː', 'j', 'e', 'q͡χːʼ', 'j', 'e', 'r'])
 		self.assertEqual(tokenise('t͡ɬʼibil'), ['t͡ɬʼ', 'i', 'b', 'i', 'l'])
 		self.assertEqual(tokenise('ɬalkʼ'), ['ɬ', 'a', 'l', 'kʼ'])
+
+		self.assertEqual(tokenise('nɪçt'), ['n', 'ɪ', 'ç', 't'])
+		self.assertEqual(tokenise('t͡saɪ̯çən'), ['t͡s', 'a', 'ɪ̯', 'ç', 'ə', 'n'])
 
 	def test_tokenise_strictness(self):
 		with self.assertRaises(ValueError):

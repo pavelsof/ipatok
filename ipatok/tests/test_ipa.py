@@ -9,7 +9,9 @@ class IpaTestCase(TestCase):
 
 	def test_is_letter(self):
 		self.assertTrue(is_letter('p'))
+		self.assertTrue(is_letter('ç'))
 		self.assertTrue(is_letter('ʘ'))
+		self.assertTrue(is_letter('ɒ'))
 
 	def test_is_letter_strictness(self):
 		self.assertFalse(is_letter('ɫ', strict=True))
@@ -24,6 +26,10 @@ class IpaTestCase(TestCase):
 		self.assertTrue(is_diacritic('◌ʰ'[1]))
 		self.assertTrue(is_diacritic('◌̃'[1]))
 		self.assertTrue(is_diacritic('◌̚'[1]))
+
+	def test_is_diacritic_strictness(self):
+		self.assertFalse(is_diacritic('ˀ', strict=True))
+		self.assertTrue(is_diacritic('ˀ', strict=False))
 
 	def test_is_length(self):
 		self.assertTrue(is_length('ː'))
