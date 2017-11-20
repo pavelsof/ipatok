@@ -1,3 +1,4 @@
+from functools import partial
 from unittest import TestCase
 
 from ipatok.tokens import normalise, tokenise
@@ -15,24 +16,27 @@ class TokensTestCase(TestCase):
 		self.assertEqual(normalise('nɪçt'), 'nɪçt')  # ç in normal form D
 
 	def test_tokenise(self):
-		self.assertEqual(tokenise('miq͡χː'), ['m', 'i', 'q͡χː'])
-		self.assertEqual(tokenise('ʃːjeq͡χːʼjer'), ['ʃː', 'j', 'e', 'q͡χːʼ', 'j', 'e', 'r'])
-		self.assertEqual(tokenise('t͡ɬʼibil'), ['t͡ɬʼ', 'i', 'b', 'i', 'l'])
-		self.assertEqual(tokenise('ɬalkʼ'), ['ɬ', 'a', 'l', 'kʼ'])
+		for strict in [True, False]:
+			func = partial(tokenise, strict=strict)
 
-		self.assertEqual(tokenise('lit͡sɛ'), ['l', 'i', 't͡s', 'ɛ'])
-		self.assertEqual(tokenise('t͡ʃɛʎust'), ['t͡ʃ', 'ɛ', 'ʎ', 'u', 's', 't'])
-		self.assertEqual(tokenise('dirʲa'), ['d', 'i', 'rʲ', 'a'])
-		self.assertEqual(tokenise('ut͡ʃa sɛ'), ['u', 't͡ʃ', 'a', 's', 'ɛ'])
+			self.assertEqual(func('miq͡χː'), ['m', 'i', 'q͡χː'])
+			self.assertEqual(func('ʃːjeq͡χːʼjer'), ['ʃː', 'j', 'e', 'q͡χːʼ', 'j', 'e', 'r'])
+			self.assertEqual(func('t͡ɬʼibil'), ['t͡ɬʼ', 'i', 'b', 'i', 'l'])
+			self.assertEqual(func('ɬalkʼ'), ['ɬ', 'a', 'l', 'kʼ'])
 
-		self.assertEqual(tokenise('nɪçt'), ['n', 'ɪ', 'ç', 't'])
-		self.assertEqual(tokenise('t͡saɪ̯çən'), ['t͡s', 'a', 'ɪ̯', 'ç', 'ə', 'n'])
+			self.assertEqual(func('lit͡sɛ'), ['l', 'i', 't͡s', 'ɛ'])
+			self.assertEqual(func('t͡ʃɛʎust'), ['t͡ʃ', 'ɛ', 'ʎ', 'u', 's', 't'])
+			self.assertEqual(func('dirʲa'), ['d', 'i', 'rʲ', 'a'])
+			self.assertEqual(func('ut͡ʃa sɛ'), ['u', 't͡ʃ', 'a', 's', 'ɛ'])
 
-		self.assertEqual(tokenise('ˈd͡ʒɔɪ'), ['d͡ʒ', 'ɔ', 'ɪ'])
-		self.assertEqual(tokenise('ˈtiːt͡ʃə'), ['t', 'iː', 't͡ʃ', 'ə'])
-		self.assertEqual(tokenise('t͡ʃuːz'), ['t͡ʃ', 'uː', 'z'])
+			self.assertEqual(func('nɪçt'), ['n', 'ɪ', 'ç', 't'])
+			self.assertEqual(func('t͡saɪ̯çən'), ['t͡s', 'a', 'ɪ̯', 'ç', 'ə', 'n'])
 
-	def test_tokenise_strictness(self):
+			self.assertEqual(func('ˈd͡ʒɔɪ'), ['d͡ʒ', 'ɔ', 'ɪ'])
+			self.assertEqual(func('ˈtiːt͡ʃə'), ['t', 'iː', 't͡ʃ', 'ə'])
+			self.assertEqual(func('t͡ʃuːz'), ['t͡ʃ', 'uː', 'z'])
+
+	def test_tokenise_non_ipa(self):
 		with self.assertRaises(ValueError):
 			tokenise('ʷəˈʁʷa', strict=True)
 		self.assertEqual(tokenise('ʷəˈʁʷa', strict=False), ['ʷ', 'ə', 'ʁʷ', 'a'])

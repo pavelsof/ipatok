@@ -1,4 +1,4 @@
-# letters
+# consonants (pulmonic)
 p	vl bilabial plosive
 b	vd bilabial plosive
 m	vd bilabial nasal
@@ -59,6 +59,7 @@ q	vl uvular plosive
 h	vl glottal fricative
 ɦ	vd glottal fricative
 
+# consonants (non-pulmonic)
 ʘ	bilabial click
 ǀ	dental click
 ǃ	(post)alveolar click
@@ -70,6 +71,7 @@ h	vl glottal fricative
 ɠ	vd velar implosive
 ʛ	vd uvular implosive
 
+# other symbols
 ʍ	vl labial-velar fricative
 w	vd labial-velar approximant
 ɥ	vd labial-palatal approximant
@@ -81,6 +83,11 @@ w	vd labial-velar approximant
 ɺ	vd alveolar lateral flap
 ɧ	simultaneous ʃ and x
 
+# tie bars
+͡	tie bar (above)
+͜	tie bar (below)
+
+# vowels
 i	close front unrounded vowel
 y	close front rounded vowel
 ɪ	lowered-close front unrounded vowel
@@ -109,10 +116,6 @@ o	close-mid back rounded vowel
 ɔ	open-mid back rounded vowel
 ɑ	open back unrounded vowel
 ɒ	open back rounded vowel
-
-# tie bars
-͡	tie bar (above)
-͜	tie bar (below)
 
 # diacritics
 ʼ	ejective diacritic
@@ -150,11 +153,6 @@ o	close-mid back rounded vowel
 ˡ	lateral release
 ̚	no audible release
 
-# lengths
-ː	long
-ˑ	half-long
-̆	extra-short
-
 # suprasegmentals
 ˈ	primary stress
 ˌ	secondary stress
@@ -163,6 +161,12 @@ o	close-mid back rounded vowel
 .	syllable break
 ‿	linking (absence of a break)
 
+# lengths
+ː	long
+ˑ	half-long
+̆	extra-short
+
+# tones and word accents
 ̋	extra-high tone (accent mark)
 ˥	extra-high tone (Chao letter)
 ́	high level tone (accent mark)

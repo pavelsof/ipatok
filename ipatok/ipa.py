@@ -16,40 +16,43 @@ class Chart:
 
 	def __init__(self):
 		"""
-		Init the instance's properties. These are character sets, one for each
-		class of IPA symbols.
+		Init the instance's properties. These are character sets, as needed by
+		the is_ functions that comprise the module's api.
 		"""
-		self.letters = set()
-		self.non_letters = set()
+		self.consonants = set()
+		self.vowels = set()
 		self.tie_bars = set()
 		self.diacritics = set()
-		self.non_diacritics = set()
-		self.lengths = set()
 		self.suprasegmentals = set()
+		self.lengths = set()
 
 	def load(self, file_path):
 		"""
 		Populate the instance's properties using the specified file.
 		"""
 		sections = {
-			'# letters': self.letters,
-			'# non-standard letters': self.non_letters,
+			'# consonants (pulmonic)': self.consonants,
+			'# consonants (non-pulmonic)': self.consonants,
+			'# other symbols': self.consonants,
 			'# tie bars': self.tie_bars,
+			'# vowels': self.vowels,
 			'# diacritics': self.diacritics,
-			'# non-standard diacritics': self.non_diacritics,
+			'# suprasegmentals': self.suprasegmentals,
 			'# lengths': self.lengths,
-			'# suprasegmentals': self.suprasegmentals }
+			'# tones and word accents': self.suprasegmentals }
 
 		curr_section = None
 
 		with open(file_path, encoding='utf-8') as f:
 			for line in map(lambda x: x.strip(), f):
 				if line.startswith('#'):
-					assert line in sections
-					curr_section = sections[line]
+					if line in sections:
+						curr_section = sections[line]
+					else:
+						curr_section = None
 				elif line:
-					assert curr_section is not None
-					curr_section.add(line.split('\t')[0])
+					if curr_section is not None:
+						curr_section.add(line.split('\t')[0])
 
 
 def ensure_single_char(func):
@@ -71,18 +74,35 @@ def ensure_single_char(func):
 @ensure_single_char
 def is_letter(char, strict=True):
 	"""
-	Check whether the given character is an IPA letter.
+	Check whether the character is a letter (as opposed to a diacritic or
+	suprasegmental).
+
+	In strict mode return True only if the letter is part of the IPA spec.
 	"""
-	if strict:
-		return char in chart.letters
-	else:
-		return char in chart.letters or char in chart.non_letters
+	if (char in chart.consonants) or (char in chart.vowels):
+		return True
+
+	if not strict:
+		return unicodedata.category(char) in ['Ll', 'Lo']
+
+	return False
+
+
+@ensure_single_char
+def is_vowel(char, strict=True):
+	"""
+	Check whether the character is a vowel letter.
+	"""
+	if is_letter(char, strict):
+		return char in chart.vowels
+
+	return False
 
 
 @ensure_single_char
 def is_tie_bar(char):
 	"""
-	Check whether the given character is one of the two tie bar symbols.
+	Check whether the character is one of the two IPA tie bar symbols.
 	"""
 	return char in chart.tie_bars
 
@@ -90,36 +110,46 @@ def is_tie_bar(char):
 @ensure_single_char
 def is_diacritic(char, strict=True):
 	"""
-	Check whether the given character is an IPA diacritic.
-	"""
-	if strict:
-		return char in chart.diacritics
-	else:
-		return char in chart.diacritics or char in chart.non_diacritics
+	Check whether the character is a diacritic (as opposed to a letter or a
+	suprasegmental).
 
+	In strict mode return True only if the diacritic is part of the IPA spec.
+	"""
+	if char in chart.diacritics:
+		return True
 
-@ensure_single_char
-def is_length(char):
-	"""
-	Check whether the given character is an IPA length marker.
-	"""
-	return char in chart.lengths
+	if not strict:
+		return (not is_suprasegmental(char)) and \
+				(unicodedata.category(char) in ['Lm', 'Mn', 'Sk'])
+
+	return False
 
 
 @ensure_single_char
 def is_suprasegmental(char):
 	"""
-	Check whether the given character is an IPA suprasegmental.
+	Check whether the character is a suprasegmental according to the IPA spec.
+	This includes tones, word accents, and length markers.
 	"""
-	return char in chart.suprasegmentals
+	return (char in chart.suprasegmentals) or (char in chart.lengths)
+
+
+@ensure_single_char
+def is_length(char):
+	"""
+	Check whether the character is a length marker. Unlike other
+	suprasegmentals, length markers are included in the tokenised output.
+	"""
+	return char in chart.lengths
 
 
 def get_precomposed_chars():
 	"""
-	Return the set of IPA characters that are pre-composed.
+	Return the set of IPA characters that are defined in normal form C in the
+	spec. As of 2015, this is only the voiceless palatal fricative, ç.
 	"""
 	return set([
-		letter for letter in chart.letters
+		letter for letter in chart.consonants
 		if unicodedata.normalize('NFD', letter) != letter ])
 
 
