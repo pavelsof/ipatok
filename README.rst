@@ -22,7 +22,8 @@ excluded from the output. Whitespace is also ignored.
 
 By default the function raises a ``ValueError`` if the string does not conform
 to the `IPA spec`_ (the 2015 revision). Invoking it with ``strict=False`` makes
-it accept some common replacements such as ``g`` and ``ɫ``.
+it accept some common replacements such as ``g`` and ``ɫ`` and non-standard
+characters such as ``ˀ``.
 
 ``tokenize(string, strict=True)`` is an alias for ``tokenise``.
 

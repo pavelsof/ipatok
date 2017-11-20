@@ -23,8 +23,11 @@ def normalise(string):
 
 def tokenise(string, strict=True):
 	"""
-	Tokenises the given IPA string into a list of tokens. Raise ValueError if
-	the argument is not a valid IPA string.
+	Tokenise the given IPA string into a list of tokens or raise ValueError if
+	the argument cannot be tokenised (relatively) unambiguously.
+
+	If the strict flag is set to False, then allow non-standard letters and
+	diacritics, as well as initial diacritic-only tokens (e.g. pre-aspiration).
 	"""
 	string = normalise(string)
 	tokens = []
@@ -36,10 +39,14 @@ def tokenise(string, strict=True):
 			else:
 				tokens.append(char)
 
-		elif ipa.is_diacritic(char) or ipa.is_length(char):
-			if not tokens:
-				raise ValueError('The string starts with a diacritic')
-			tokens[-1] += char
+		elif ipa.is_diacritic(char, strict) or ipa.is_length(char):
+			if tokens:
+				tokens[-1] += char
+			else:
+				if strict:
+					raise ValueError('The string starts with a diacritic')
+				else:
+					tokens.append(char)
 
 		elif ipa.is_suprasegmental(char):
 			pass

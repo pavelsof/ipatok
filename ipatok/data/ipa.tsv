@@ -110,10 +110,6 @@ o	close-mid back rounded vowel
 ɑ	open back unrounded vowel
 ɒ	open back rounded vowel
 
-# non-standard letters
-ɫ	l̴
-g	ɡ
-
 # tie bars
 ͡	tie bar (above)
 ͜	tie bar (below)
@@ -154,9 +150,6 @@ g	ɡ
 ˡ	lateral release
 ̚	no audible release
 
-# non-standard diacritics
-ˀ	glottalised
-
 # lengths
 ː	long
 ˑ	half-long
@@ -189,3 +182,20 @@ g	ɡ
 ꜛ	upstep
 ↗	global rise
 ↘	global fall
+
+# non-standard letters
+ʦ	t͡s
+ʧ	t͡ʃ
+ʨ	t͡ɕ
+ʣ	d͡z
+ʤ	d͡ʒ
+ʥ	d͡ʑ
+ł	l̴
+ɫ	l̴
+g	ɡ
+
+# non-standard diacritics
+ˀ	glottalised
+̇	dot above
+̣	dot below, e.g. half-long voiced consonants in Inari Sami
+͈	double vertical line below, e.g. faucalised voice
