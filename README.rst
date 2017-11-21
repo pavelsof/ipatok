@@ -60,10 +60,14 @@ or, alternatively, you can clone this repo (safe to delete afterwards) and do::
 Of course, this could be happening within a virtualenv/venv as well.
 
 
-similar projects
-================
+other IPA packages
+==================
 
-* lingpy_ provides an ipa2tokens_ function.
+- lingpy_ is a historical linguistics suite that includes an ipa2tokens_
+  function.
+- ipapy_ is a package for working with IPA strings.
+- ipalint_ provides a command-line tool for checking IPA datasets for errors
+  and inconsistencies.
 
 
 licence
@@ -73,5 +77,7 @@ MIT. Do as you please and praise the snake gods.
 
 .. _`the 2015 revision`: https://www.internationalphoneticassociation.org/sites/default/files/phonsymbol.pdf
 .. _`Cheese Shop`: https://pypi.python.org/pypi/ipatok
-.. _`lingpy`: http://lingpy.org/
+.. _`lingpy`: https://pypi.python.org/pypi/lingpy
 .. _`ipa2tokens`: http://lingpy.org/reference/lingpy.sequence.html#lingpy.sequence.sound_classes.ipa2tokens
+.. _`ipapy`: https://pypi.python.org/pypi/ipapy
+.. _`ipalint`: https://pypi.python.org/pypi/ipalint
