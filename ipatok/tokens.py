@@ -6,10 +6,12 @@ from ipatok import ipa
 
 def normalise(string):
 	"""
-	Normalise the string by removing the whitespace and convert the characters
-	to Unicode's normal form NFD except for those that are pre-composed in IPA.
+	Convert each character of the string to the normal form in which it was
+	defined in the IPA spec. This would be normal form D, except for the
+	voiceless palatar fricative (ç) which should be in normal form C.
+
+	Helper for tokenise_word(string, ..).
 	"""
-	string = ''.join(string.strip().split())
 	string = unicodedata.normalize('NFD', string)
 
 	for char_c in ipa.get_precomposed_chars():
@@ -22,6 +24,11 @@ def normalise(string):
 
 def group(merge_func, tokens):
 	"""
+	Group together those of the tokens for which the merge function returns
+	true. The merge function should accept two arguments/tokens and should
+	return a boolean indicating whether the strings should be merged or not.
+
+	Helper for tokenise(string, ..).
 	"""
 	output = []
 
@@ -41,7 +48,17 @@ def group(merge_func, tokens):
 
 def are_diphtong(tokenA, tokenB):
 	"""
-	Check whether the two tokens can form a diphtong.
+	Check (naively) whether the two tokens can form a diphtong. This would be a
+	sequence of vowels of which no more than one is syllabic. Vowel sequences
+	connected with a tie bar would already be handled in tokenise_word, so are
+	not checked for here.
+
+	Users who want more sophisticated diphtong detection should instead write
+	their own function and do something like::
+
+		tokenise(string, diphtong=False, merge=user_func)
+
+	Helper for tokenise(string, ..).
 	"""
 	if ipa.is_vowel(tokenA[0]) and ipa.is_vowel(tokenB[0]):
 		return any([char == '◌̯'[1] for char in tokenA+tokenB])
@@ -51,11 +68,15 @@ def are_diphtong(tokenA, tokenB):
 
 def tokenise_word(string, strict=False, replace=False):
 	"""
-	Tokenise the given IPA string into a list of tokens or raise ValueError if
-	the argument cannot be tokenised (relatively) unambiguously.
+	Tokenise the string into a list of tokens or raise ValueError if it cannot
+	be tokenised (relatively) unambiguously. The string should not include
+	whitespace, i.e. it is assumed to be a single word.
 
-	If the strict flag is set to False, then allow non-standard letters and
-	diacritics, as well as initial diacritic-only tokens (e.g. pre-aspiration).
+	If strict=False, allow non-standard letters and diacritics, as well as
+	initial diacritic-only tokens (e.g. pre-aspiration). If replace=True,
+	replace some common non-IPA symbols with their IPA counterparts.
+
+	Helper for tokenise(string, ..).
 	"""
 	string = normalise(string)
 	tokens = []
@@ -66,6 +87,11 @@ def tokenise_word(string, strict=False, replace=False):
 				tokens[-1] += char
 			else:
 				tokens.append(char)
+
+		elif ipa.is_tie_bar(char):
+			if not tokens:
+				raise ValueError('The string starts with a tie bar')
+			tokens[-1] += char
 
 		elif ipa.is_diacritic(char, strict) or ipa.is_length(char):
 			if tokens:
@@ -79,27 +105,35 @@ def tokenise_word(string, strict=False, replace=False):
 		elif ipa.is_suprasegmental(char):
 			pass
 
-		elif ipa.is_tie_bar(char):
-			if not tokens:
-				raise ValueError('The string starts with a tie bar')
-			tokens[-1] += char
-
 		else:
 			raise ValueError('Unrecognised char: {} ({})'.format(char, unicodedata.name(char)))
 
 	return tokens
 
 
-def tokenise(string, strict=False, replace=False, diphtongs=False):
+def tokenise(string, strict=False, replace=False, diphtongs=False, merge=None):
 	"""
+	Tokenise an IPA string into a list of tokens. Raise ValueError if there is
+	a problem; if strict=True, this includes the string not being compliant to
+	the IPA spec.
+
+	If replace=True, replace some common non-IPA symbols with their IPA
+	counterparts. If diphtongs=True, try to group diphtongs into single tokens.
+	If merge is not None, use it for within-word token grouping.
+
+	Part of ipatok's public API.
 	"""
 	words = string.strip().split()
 	output = []
 
 	for word in words:
 		tokens = tokenise_word(word, strict=strict, replace=replace)
+
 		if diphtongs:
 			tokens = group(are_diphtong, tokens)
+
+		if merge:
+			tokens = group(merge, tokens)
 
 		output.extend(tokens)
 

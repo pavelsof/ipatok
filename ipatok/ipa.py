@@ -6,7 +6,7 @@ import unicodedata
 """
 Path to the IPA data file, storing a list of all valid IPA symbols.
 """
-IPA_DATA_PATH = os.path.join(os.path.dirname(__file__), 'data/ipa.tsv')
+IPA_DATA_PATH = os.path.join(os.path.dirname(__file__), 'data/ipa_2015.tsv')
 
 
 class Chart:

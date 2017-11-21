@@ -14,12 +14,12 @@ A simple IPA tokeniser, as simple as in:
 api
 ===
 
-``tokenise(string, strict=False, diphtongs=False, replace=False)`` takes an IPA
-string and returns a list of tokens. A token usually consists of a single
-letter together with its accompanying diacritics. If two letters are connected
-by a tie bar, they are also considered a single token. Except for length
-markers, suprasegmentals are excluded from the output. Whitespace is also
-ignored. The function accepts the following keyword arguments:
+``tokenise(string, strict=False, replace=False, diphtongs=False, merge=None)``
+takes an IPA string and returns a list of tokens. A token usually consists of a
+single letter together with its accompanying diacritics. If two letters are
+connected by a tie bar, they are also considered a single token. Except for
+length markers, suprasegmentals are excluded from the output. Whitespace is
+also ignored. The function accepts the following keyword arguments:
 
 - ``strict``: if set to ``True``, the function ensures that ``string`` complies
   to the `IPA spec`_ (the 2015 revision); a ``ValueError`` is raised if it does
@@ -27,11 +27,16 @@ ignored. The function accepts the following keyword arguments:
   guessed based on their Unicode category.
 - ``replace``: if set to ``True``, the function replaces some common
   substitutes with their IPA-compliant counterparts, e.g. ``g → ɡ``, ``ɫ → l̴``,
-  ``ʦ → t͡s``. Refer to ``ipatok/data/ipa.tsv`` for a full list.
+  ``ʦ → t͡s``. Refer to ``ipatok/data/replace.tsv`` for a full list.
 - ``diphtongs``: if set to ``True``, the function groups together non-syllabic
   vowels with their syllabic neighbours (e.g. ``aɪ̯`` would form a single
   token). If set to ``False`` (the default), vowels are not tokenised together
   unless there is a connecting tie bar (e.g. ``a͡ɪ``).
+- ``merge``: expects a ``str, str → boolean`` function to be applied onto each
+  pair of consecutive tokens; those for which the output is ``True`` are merged
+  together. You can use this to, e.g., plug in own diphtong detection algorithm:
+
+  >>> tokenise(string, diphtong=False, merge=custom_func)
 
 ``tokenize`` is an alias for ``tokenise``.
 
