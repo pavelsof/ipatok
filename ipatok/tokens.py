@@ -79,6 +79,10 @@ def tokenise_word(string, strict=False, replace=False):
 	Helper for tokenise(string, ..).
 	"""
 	string = normalise(string)
+
+	if replace is True:
+		string = ipa.replace_substitutes(string)
+
 	tokens = []
 
 	for index, char in enumerate(string):
@@ -90,15 +94,15 @@ def tokenise_word(string, strict=False, replace=False):
 
 		elif ipa.is_tie_bar(char):
 			if not tokens:
-				raise ValueError('The string starts with a tie bar')
+				raise ValueError('The string starts with a tie bar: {}'.format(string))
 			tokens[-1] += char
 
 		elif ipa.is_diacritic(char, strict) or ipa.is_length(char):
 			if tokens:
 				tokens[-1] += char
 			else:
-				if strict:
-					raise ValueError('The string starts with a diacritic')
+				if strict is True:
+					raise ValueError('The string starts with a diacritic: {}'.format(string))
 				else:
 					tokens.append(char)
 
@@ -129,10 +133,10 @@ def tokenise(string, strict=False, replace=False, diphtongs=False, merge=None):
 	for word in words:
 		tokens = tokenise_word(word, strict=strict, replace=replace)
 
-		if diphtongs:
+		if diphtongs is True:
 			tokens = group(are_diphtong, tokens)
 
-		if merge:
+		if merge is not None:
 			tokens = group(merge, tokens)
 
 		output.extend(tokens)

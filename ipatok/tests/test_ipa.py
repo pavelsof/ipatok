@@ -5,6 +5,7 @@ from ipatok.ipa import is_letter, is_vowel, is_tie_bar
 from ipatok.ipa import is_diacritic
 from ipatok.ipa import is_suprasegmental, is_length
 from ipatok.ipa import get_precomposed_chars
+from ipatok.ipa import replace_substitutes
 
 
 
@@ -81,3 +82,8 @@ class IpaTestCase(TestCase):
 
 	def test_get_precomposed_chars(self):
 		self.assertEqual(get_precomposed_chars(), set(['ç']))
+
+	def test_replace_substitutes(self):
+		self.assertEqual(replace_substitutes('g'), 'ɡ')
+		self.assertEqual(replace_substitutes('ł'), 'l̴')
+		self.assertEqual(replace_substitutes('ɫ'), 'l̴')

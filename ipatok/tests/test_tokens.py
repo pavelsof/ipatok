@@ -13,6 +13,10 @@ class TokensTestCase(TestCase):
 	"""
 
 	def test_normalise(self):
+		"""
+		The voiceless palatal fricative should be in normal form C in the
+		output, regardless of its input form.
+		"""
 		self.assertEqual(normalise('nɪçt'), 'nɪçt')  # ç in normal form C
 		self.assertEqual(normalise('nɪçt'), 'nɪçt')  # ç in normal form D
 
@@ -23,6 +27,10 @@ class TokensTestCase(TestCase):
 			self.assertEqual(group(lambda x, y: x == y, ['a'] * i), ['a' * i])
 
 	def test_tokenise(self):
+		"""
+		IPA-compliant strings should be correctly tokenised, regardless of the
+		flag values.
+		"""
 		for comb in product([True, False], [True, False], [True, False]):
 			func = partial(tokenise,
 					strict=comb[0], replace=comb[1], diphtongs=comb[2])
@@ -44,16 +52,16 @@ class TokensTestCase(TestCase):
 			self.assertEqual(func('t͡ʃuːz'), ['t͡ʃ', 'uː', 'z'])
 
 	def test_tokenise_non_ipa(self):
+		"""
+		Tokenising non-compliant strings should raise ValueError unless strict
+		is False, regardless of the other flags' values.
+		"""
 		for comb in product([True, False], [True, False]):
 			func = partial(tokenise, replace=comb[0], diphtongs=comb[1])
 
 			with self.assertRaises(ValueError):
 				func('ʷəˈʁʷa', strict=True)
 			self.assertEqual(func('ʷəˈʁʷa', strict=False), ['ʷ', 'ə', 'ʁʷ', 'a'])
-
-			with self.assertRaises(ValueError):
-				func('t͡ʃɛɫɔ', strict=True)
-			self.assertEqual(func('t͡ʃɛɫɔ', strict=False), ['t͡ʃ', 'ɛ', 'ɫ', 'ɔ'])
 
 			with self.assertRaises(ValueError):
 				func('t͡ɕˀet͡ɕeŋ', strict=True)
@@ -63,7 +71,27 @@ class TokensTestCase(TestCase):
 				func('kat͡ɕˀaɹ', strict=True)
 			self.assertEqual(func('kat͡ɕˀaɹ', strict=False), ['k', 'a', 't͡ɕˀ', 'a', 'ɹ'])
 
+	def test_tokenise_replace(self):
+		"""
+		Strings containing common substitutes but otherwise IPA-compliant
+		should pass the strictness check only if replace is True.
+		"""
+		for diphtongs in [True, False]:
+			func = partial(tokenise, strict=True, diphtongs=diphtongs)
+
+			with self.assertRaises(ValueError):
+				func('t͡ʃɛɫɔ', replace=False)
+			self.assertEqual(func('t͡ʃɛɫɔ', replace=True), ['t͡ʃ', 'ɛ', 'l̴', 'ɔ'])
+
+			with self.assertRaises(ValueError):
+				func('ɫuna', replace=False)
+			self.assertEqual(func('ɫuna', replace=True), ['l̴', 'u', 'n', 'a'])
+
 	def test_tokenise_diphtongs(self):
+		"""
+		Diphtongs in IPA-compliant strings should be merged depending on the
+		diphtongs flag, regardless of the other flags' values.
+		"""
 		for comb in product([True, False], [True, False]):
 			func = partial(tokenise, strict=comb[0], replace=comb[1])
 

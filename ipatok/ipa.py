@@ -3,10 +3,15 @@ import os.path
 import unicodedata
 
 
+
 """
-Path to the IPA data file, storing a list of all valid IPA symbols.
+Paths to the ipatok/data dir and the two files in there.
 """
-IPA_DATA_PATH = os.path.join(os.path.dirname(__file__), 'data/ipa_2015.tsv')
+DATA_DIR = os.path.join(os.path.dirname(__file__), 'data')
+
+IPA_CHART_PATH = os.path.join(DATA_DIR, 'ipa_2015.tsv')
+REPLACEMENTS_PATH = os.path.join(DATA_DIR, 'replacements.tsv')
+
 
 
 class Chart:
@@ -16,8 +21,10 @@ class Chart:
 
 	def __init__(self):
 		"""
-		Init the instance's properties. These are character sets, as needed by
-		the is_ functions that comprise the module's api.
+		Init the instance's properties. All of these but the last one are
+		character sets, as needed by the is_ functions that comprise the
+		module's api. The last one is a dict mapping common substitutes to
+		their respective IPA counterparts.
 		"""
 		self.consonants = set()
 		self.vowels = set()
@@ -26,9 +33,11 @@ class Chart:
 		self.suprasegmentals = set()
 		self.lengths = set()
 
-	def load(self, file_path):
+		self.replacements = {}
+
+	def load_ipa(self, file_path):
 		"""
-		Populate the instance's properties using the specified file.
+		Populate the instance's set properties using the specified file.
 		"""
 		sections = {
 			'# consonants (pulmonic)': self.consonants,
@@ -53,6 +62,17 @@ class Chart:
 				elif line:
 					if curr_section is not None:
 						curr_section.add(line.split('\t')[0])
+
+	def load_replacements(self, file_path):
+		"""
+		Populate self.replacements using the specified file.
+		"""
+		with open(file_path, encoding='utf-8') as f:
+			for line in map(lambda x: x.strip(), f):
+				if line:
+					line = line.split('\t')
+					self.replacements[line[0]] = line[1]
+
 
 
 def ensure_single_char(func):
@@ -153,8 +173,20 @@ def get_precomposed_chars():
 		if unicodedata.normalize('NFD', letter) != letter ])
 
 
+def replace_substitutes(string):
+	"""
+	Return the given string with all known common substitutes replaced with
+	their IPA-compliant counterparts.
+	"""
+	for non_ipa, ipa in chart.replacements.items():
+		string = string.replace(non_ipa, ipa)
+
+	return string
+
+
 """
 Load the chart
 """
 chart = Chart()
-chart.load(IPA_DATA_PATH)
+chart.load_ipa(IPA_CHART_PATH)
+chart.load_replacements(REPLACEMENTS_PATH)
