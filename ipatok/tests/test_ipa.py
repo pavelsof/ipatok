@@ -29,16 +29,13 @@ class IpaTestCase(TestCase):
 			self.assertTrue(is_letter(char, strict=False))
 
 	def test_is_vowel(self):
-		for strict in [True, False]:
-			func = partial(is_vowel, strict=strict)
+		self.assertTrue(is_vowel('i'))
+		self.assertTrue(is_vowel('ɶ'))
+		self.assertTrue(is_vowel('ɤ'))
+		self.assertTrue(is_vowel('ɒ'))
 
-			self.assertTrue(func('i'))
-			self.assertTrue(func('ɶ'))
-			self.assertTrue(func('ɤ'))
-			self.assertTrue(func('ɒ'))
-
-			self.assertFalse(func('ʍ'))
-			self.assertFalse(func('ɧ'))
+		self.assertFalse(is_vowel('ʍ'))
+		self.assertFalse(is_vowel('ɧ'))
 
 	def test_is_tie_bar(self):
 		self.assertTrue(is_tie_bar('◌͡'[1]))

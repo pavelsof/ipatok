@@ -1,7 +1,8 @@
 from functools import partial
+from itertools import product
 from unittest import TestCase
 
-from ipatok.tokens import normalise, tokenise
+from ipatok.tokens import normalise, group, tokenise
 
 
 
@@ -15,9 +16,16 @@ class TokensTestCase(TestCase):
 		self.assertEqual(normalise('nɪçt'), 'nɪçt')  # ç in normal form C
 		self.assertEqual(normalise('nɪçt'), 'nɪçt')  # ç in normal form D
 
+	def test_group(self):
+		self.assertEqual(group(lambda: True, []), [])
+
+		for i in range(4, 1):
+			self.assertEqual(group(lambda x, y: x == y, ['a'] * i), ['a' * i])
+
 	def test_tokenise(self):
-		for strict in [True, False]:
-			func = partial(tokenise, strict=strict)
+		for comb in product([True, False], [True, False], [True, False]):
+			func = partial(tokenise,
+					strict=comb[0], replace=comb[1], diphtongs=comb[2])
 
 			self.assertEqual(func('miq͡χː'), ['m', 'i', 'q͡χː'])
 			self.assertEqual(func('ʃːjeq͡χːʼjer'), ['ʃː', 'j', 'e', 'q͡χːʼ', 'j', 'e', 'r'])
@@ -30,25 +38,40 @@ class TokensTestCase(TestCase):
 			self.assertEqual(func('ut͡ʃa sɛ'), ['u', 't͡ʃ', 'a', 's', 'ɛ'])
 
 			self.assertEqual(func('nɪçt'), ['n', 'ɪ', 'ç', 't'])
-			self.assertEqual(func('t͡saɪ̯çən'), ['t͡s', 'a', 'ɪ̯', 'ç', 'ə', 'n'])
 
 			self.assertEqual(func('ˈd͡ʒɔɪ'), ['d͡ʒ', 'ɔ', 'ɪ'])
 			self.assertEqual(func('ˈtiːt͡ʃə'), ['t', 'iː', 't͡ʃ', 'ə'])
 			self.assertEqual(func('t͡ʃuːz'), ['t͡ʃ', 'uː', 'z'])
 
 	def test_tokenise_non_ipa(self):
-		with self.assertRaises(ValueError):
-			tokenise('ʷəˈʁʷa', strict=True)
-		self.assertEqual(tokenise('ʷəˈʁʷa', strict=False), ['ʷ', 'ə', 'ʁʷ', 'a'])
+		for comb in product([True, False], [True, False]):
+			func = partial(tokenise, replace=comb[0], diphtongs=comb[1])
 
-		with self.assertRaises(ValueError):
-			tokenise('t͡ʃɛɫɔ', strict=True)
-		self.assertEqual(tokenise('t͡ʃɛɫɔ', strict=False), ['t͡ʃ', 'ɛ', 'ɫ', 'ɔ'])
+			with self.assertRaises(ValueError):
+				func('ʷəˈʁʷa', strict=True)
+			self.assertEqual(func('ʷəˈʁʷa', strict=False), ['ʷ', 'ə', 'ʁʷ', 'a'])
 
-		with self.assertRaises(ValueError):
-			tokenise('t͡ɕˀet͡ɕeŋ', strict=True)
-		self.assertEqual(tokenise('t͡ɕˀet͡ɕeŋ', strict=False), ['t͡ɕˀ', 'e', 't͡ɕ', 'e', 'ŋ'])
+			with self.assertRaises(ValueError):
+				func('t͡ʃɛɫɔ', strict=True)
+			self.assertEqual(func('t͡ʃɛɫɔ', strict=False), ['t͡ʃ', 'ɛ', 'ɫ', 'ɔ'])
 
-		with self.assertRaises(ValueError):
-			tokenise('kat͡ɕˀaɹ', strict=True)
-		self.assertEqual(tokenise('kat͡ɕˀaɹ', strict=False), ['k', 'a', 't͡ɕˀ', 'a', 'ɹ'])
+			with self.assertRaises(ValueError):
+				func('t͡ɕˀet͡ɕeŋ', strict=True)
+			self.assertEqual(func('t͡ɕˀet͡ɕeŋ', strict=False), ['t͡ɕˀ', 'e', 't͡ɕ', 'e', 'ŋ'])
+
+			with self.assertRaises(ValueError):
+				func('kat͡ɕˀaɹ', strict=True)
+			self.assertEqual(func('kat͡ɕˀaɹ', strict=False), ['k', 'a', 't͡ɕˀ', 'a', 'ɹ'])
+
+	def test_tokenise_diphtongs(self):
+		for comb in product([True, False], [True, False]):
+			func = partial(tokenise, strict=comb[0], replace=comb[1])
+
+			self.assertEqual(func('t͡saɪ̯çən', diphtongs=False), ['t͡s', 'a', 'ɪ̯', 'ç', 'ə', 'n'])
+			self.assertEqual(func('t͡saɪ̯çən', diphtongs=True), ['t͡s', 'aɪ̯', 'ç', 'ə', 'n'])
+
+			self.assertEqual(func('hɛɐ̯t͡s', diphtongs=False), ['h', 'ɛ', 'ɐ̯', 't͡s'])
+			self.assertEqual(func('hɛɐ̯t͡s', diphtongs=True), ['h', 'ɛɐ̯', 't͡s'])
+
+			self.assertEqual(func('moːɐ̯', diphtongs=False), ['m', 'oː', 'ɐ̯'])
+			self.assertEqual(func('moːɐ̯', diphtongs=True), ['m', 'oːɐ̯'])

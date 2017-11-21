@@ -89,11 +89,11 @@ def is_letter(char, strict=True):
 
 
 @ensure_single_char
-def is_vowel(char, strict=True):
+def is_vowel(char):
 	"""
 	Check whether the character is a vowel letter.
 	"""
-	if is_letter(char, strict):
+	if is_letter(char, strict=True):
 		return char in chart.vowels
 
 	return False

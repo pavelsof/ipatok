@@ -20,8 +20,36 @@ def normalise(string):
 	return string
 
 
+def group(merge_func, tokens):
+	"""
+	"""
+	output = []
 
-def tokenise(string, strict=True):
+	if tokens:
+		output.append(tokens[0])
+
+		for i in range(1, len(tokens)):
+			prev_token, token = tokens[i-1], tokens[i]
+
+			if merge_func(prev_token, token):
+				output[-1] += token
+			else:
+				output.append(token)
+
+	return output
+
+
+def are_diphtong(tokenA, tokenB):
+	"""
+	Check whether the two tokens can form a diphtong.
+	"""
+	if ipa.is_vowel(tokenA[0]) and ipa.is_vowel(tokenB[0]):
+		return any([char == '◌̯'[1] for char in tokenA+tokenB])
+
+	return False
+
+
+def tokenise_word(string, strict=False, replace=False):
 	"""
 	Tokenise the given IPA string into a list of tokens or raise ValueError if
 	the argument cannot be tokenised (relatively) unambiguously.
@@ -61,6 +89,21 @@ def tokenise(string, strict=True):
 
 	return tokens
 
+
+def tokenise(string, strict=False, replace=False, diphtongs=False):
+	"""
+	"""
+	words = string.strip().split()
+	output = []
+
+	for word in words:
+		tokens = tokenise_word(word, strict=strict, replace=replace)
+		if diphtongs:
+			tokens = group(are_diphtong, tokens)
+
+		output.extend(tokens)
+
+	return output
 
 
 """
