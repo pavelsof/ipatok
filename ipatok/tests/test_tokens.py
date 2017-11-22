@@ -2,7 +2,7 @@ from functools import partial
 from itertools import product
 from unittest import TestCase
 
-from ipatok.tokens import normalise, group, tokenise
+from ipatok.tokens import normalise, group, are_diphtong, tokenise
 
 
 
@@ -25,6 +25,17 @@ class TokensTestCase(TestCase):
 
 		for i in range(4, 1):
 			self.assertEqual(group(lambda x, y: x == y, ['a'] * i), ['a' * i])
+
+	def test_are_diphtong(self):
+		self.assertTrue(are_diphtong('ə', 'ə̯'))
+		self.assertTrue(are_diphtong('ə̯', 'ə'))
+		self.assertTrue(are_diphtong('ə̯', 'ə̯'))
+		self.assertFalse(are_diphtong('ə', 'ə'))
+
+		self.assertTrue(are_diphtong('əə̯', 'ə̯'))
+		self.assertTrue(are_diphtong('ə̯ə', 'ə̯'))
+		self.assertFalse(are_diphtong('əə̯', 'ə'))
+		self.assertFalse(are_diphtong('ə̯ə', 'ə'))
 
 	def test_tokenise(self):
 		"""
@@ -103,3 +114,9 @@ class TokensTestCase(TestCase):
 
 			self.assertEqual(func('moːɐ̯', diphtongs=False), ['m', 'oː', 'ɐ̯'])
 			self.assertEqual(func('moːɐ̯', diphtongs=True), ['m', 'oːɐ̯'])
+
+			self.assertEqual(func('aɪ̯çhœɐ̯nçən', diphtongs=False), ['a', 'ɪ̯', 'ç', 'h', 'œ', 'ɐ̯', 'n', 'ç', 'ə', 'n'])
+			self.assertEqual(func('aɪ̯çhœɐ̯nçən', diphtongs=True), ['aɪ̯', 'ç', 'h', 'œɐ̯', 'n', 'ç', 'ə', 'n'])
+
+			self.assertEqual(func('klaʊ̯ə', diphtongs=False), ['k', 'l', 'a', 'ʊ̯', 'ə'])
+			self.assertEqual(func('klaʊ̯ə', diphtongs=True), ['k', 'l', 'aʊ̯', 'ə'])

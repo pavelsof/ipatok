@@ -36,7 +36,7 @@ also ignored. The function accepts the following keyword arguments:
   unless there is a connecting tie bar (e.g. ``a͡ɪ``).
 - ``merge``: expects a ``str, str → bool`` function to be applied onto each
   pair of consecutive tokens; those for which the output is ``True`` are merged
-  together. You can use this to, e.g., plug in own diphtong detection
+  together. You can use this to, e.g., plug in your own diphtong detection
   algorithm:
 
   >>> tokenise(string, diphtongs=False, merge=custom_func)

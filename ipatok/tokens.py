@@ -35,8 +35,8 @@ def group(merge_func, tokens):
 	if tokens:
 		output.append(tokens[0])
 
-		for i in range(1, len(tokens)):
-			prev_token, token = tokens[i-1], tokens[i]
+		for token in tokens[1:]:
+			prev_token = output[-1]
 
 			if merge_func(prev_token, token):
 				output[-1] += token
@@ -60,8 +60,22 @@ def are_diphtong(tokenA, tokenB):
 
 	Helper for tokenise(string, ..).
 	"""
-	if ipa.is_vowel(tokenA[0]) and ipa.is_vowel(tokenB[0]):
-		return any([char == '◌̯'[1] for char in tokenA+tokenB])
+	is_short = lambda token: '◌̯'[1] in token
+	subtokens = []
+
+	for char in tokenA+tokenB:
+		if ipa.is_vowel(char):
+			subtokens.append(char)
+		elif ipa.is_diacritic(char) or ipa.is_length(char):
+			if subtokens:
+				subtokens[-1] += char
+			else:
+				break
+		else:
+			break
+	else:
+		if len([x for x in subtokens if not is_short(x)]) < 2:
+			return True
 
 	return False
 
