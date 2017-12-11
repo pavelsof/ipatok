@@ -25,7 +25,7 @@ class IpaTestCase(TestCase):
 			self.assertFalse(func('ʷ'))
 
 	def test_is_letter_non_ipa(self):
-		for char in ['ʣ', 'ɫ', 'g']:
+		for char in ['ʣ', 'ɫ', 'g', 'Γ', 'F', 'ǈ']:
 			self.assertFalse(is_letter(char, strict=True))
 			self.assertTrue(is_letter(char, strict=False))
 

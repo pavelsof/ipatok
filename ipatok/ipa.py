@@ -103,7 +103,7 @@ def is_letter(char, strict=True):
 		return True
 
 	if not strict:
-		return unicodedata.category(char) in ['Ll', 'Lo']
+		return unicodedata.category(char) in ['Ll', 'Lo', 'Lt', 'Lu']
 
 	return False
 
