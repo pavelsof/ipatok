@@ -87,3 +87,4 @@ class IpaTestCase(TestCase):
 		self.assertEqual(replace_substitutes('g'), 'ɡ')
 		self.assertEqual(replace_substitutes('ł'), 'l̴')
 		self.assertEqual(replace_substitutes('ɫ'), 'l̴')
+		self.assertEqual(replace_substitutes('·'), 'ˑ')
