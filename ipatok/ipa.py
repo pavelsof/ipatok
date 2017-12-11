@@ -139,7 +139,7 @@ def is_diacritic(char, strict=True):
 		return True
 
 	if not strict:
-		return (not is_suprasegmental(char)) and \
+		return (not is_suprasegmental(char)) and (not is_tie_bar(char)) and \
 				(unicodedata.category(char) in ['Lm', 'Mn', 'Sk'])
 
 	return False
