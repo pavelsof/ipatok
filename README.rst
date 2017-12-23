@@ -54,7 +54,7 @@ With ``strict=False`` IPA symbols are still handled correctly. A non-IPA symbol
 would be treated as follows:
 
 - if it is a non-modifier letter (e.g. ``Γ``), it is considered a consonant;
-- if it is a modifier (e.g. ``ˀ``) or a combining mark (e.g. `` ̇``), it is
+- if it is a modifier (e.g. ``ˀ``) or a combining mark (e.g. ``ə̇``), it is
   considered a diacritic;
 - if it is neither of those, it is ignored.
 
