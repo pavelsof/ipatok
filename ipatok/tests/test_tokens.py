@@ -120,3 +120,18 @@ class TokensTestCase(TestCase):
 
 			self.assertEqual(func('klaʊ̯ə', diphtongs=False), ['k', 'l', 'a', 'ʊ̯', 'ə'])
 			self.assertEqual(func('klaʊ̯ə', diphtongs=True), ['k', 'l', 'aʊ̯', 'ə'])
+
+	def test_tokenise_splits_words(self):
+		"""
+		Whitespace characters and underscores should serve as word boundaries,
+		regardless of the flag values.
+		"""
+		for comb in product([True, False], [True, False], [True, False]):
+			func = partial(tokenise,
+					strict=comb[0], replace=comb[1], diphtongs=comb[2])
+
+			self.assertEqual(func('prɤst na krak'), ['p', 'r', 'ɤ', 's', 't', 'n', 'a', 'k', 'r', 'a', 'k'])
+			self.assertEqual(func('prɤst_na_krak'), ['p', 'r', 'ɤ', 's', 't', 'n', 'a', 'k', 'r', 'a', 'k'])
+
+			self.assertEqual(func('etɬə tite'), ['e', 't', 'ɬ', 'ə', 't', 'i', 't', 'e'])
+			self.assertEqual(func('etɬə_tite'), ['e', 't', 'ɬ', 'ə', 't', 'i', 't', 'e'])

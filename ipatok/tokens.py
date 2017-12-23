@@ -141,7 +141,7 @@ def tokenise(string, strict=False, replace=False, diphtongs=False, merge=None):
 
 	Part of ipatok's public API.
 	"""
-	words = string.strip().split()
+	words = string.strip().replace('_', ' ').split()
 	output = []
 
 	for word in words:

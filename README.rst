@@ -54,14 +54,14 @@ With ``strict=False`` IPA symbols are still handled correctly. A non-IPA symbol
 would be treated as follows:
 
 - if it is a non-modifier letter (e.g. ``Γ``), it is considered a consonant;
-- if it is a modifier (e.g. ``ˀ``) or a combining mark (``̇``), it is considered
-  a diacritic;
+- if it is a modifier (e.g. ``ˀ``) or a combining mark (e.g. `` ̇``), it is
+  considered a diacritic;
 - if it is neither of those, it is ignored.
 
-Regardless of the value of ``strict``, spaces and underscores are considered to
-be word boundaries, i.e. there would not be tokens grouping together symbols
-separated by these characters, even though the latter are not included in the
-output.
+Regardless of the value of ``strict``, whitespace characters and underscores
+are considered to be word boundaries, i.e. there would not be tokens grouping
+together symbols separated by these characters, even though the latter are not
+included in the output.
 
 
 installation
