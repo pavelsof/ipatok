@@ -3,7 +3,7 @@ from unittest import TestCase
 
 from ipatok.ipa import (
 		is_letter, is_vowel, is_tie_bar, is_diacritic,
-		is_suprasegmental, is_length,
+		is_suprasegmental, is_length, is_tone,
 		get_precomposed_chars, replace_substitutes, chart)
 
 
@@ -34,6 +34,7 @@ class IpaTestCase(TestCase):
 			[self.assertFalse(func(x)) for x in chart.diacritics]
 			[self.assertFalse(func(x)) for x in chart.suprasegmentals]
 			[self.assertFalse(func(x)) for x in chart.lengths]
+			[self.assertFalse(func(x)) for x in chart.tones]
 
 	def test_is_letter_non_ipa(self):
 		"""
@@ -64,6 +65,7 @@ class IpaTestCase(TestCase):
 		[self.assertFalse(is_vowel(x)) for x in chart.diacritics]
 		[self.assertFalse(is_vowel(x)) for x in chart.suprasegmentals]
 		[self.assertFalse(is_vowel(x)) for x in chart.lengths]
+		[self.assertFalse(is_vowel(x)) for x in chart.tones]
 
 	def test_is_tie_bar(self):
 		"""
@@ -83,6 +85,7 @@ class IpaTestCase(TestCase):
 		[self.assertFalse(is_tie_bar(x)) for x in chart.diacritics]
 		[self.assertFalse(is_tie_bar(x)) for x in chart.suprasegmentals]
 		[self.assertFalse(is_tie_bar(x)) for x in chart.lengths]
+		[self.assertFalse(is_tie_bar(x)) for x in chart.tones]
 
 	def test_is_diacritic(self):
 		"""
@@ -108,6 +111,7 @@ class IpaTestCase(TestCase):
 			[self.assertFalse(func(x)) for x in chart.tie_bars]
 			[self.assertFalse(func(x)) for x in chart.suprasegmentals]
 			[self.assertFalse(func(x)) for x in chart.lengths]
+			[self.assertFalse(func(x)) for x in chart.tones]
 
 	def test_is_diacritic_non_ipa(self):
 		"""
@@ -133,6 +137,7 @@ class IpaTestCase(TestCase):
 
 		[self.assertTrue(is_suprasegmental(x)) for x in chart.suprasegmentals]
 		[self.assertTrue(is_suprasegmental(x)) for x in chart.lengths]
+		[self.assertTrue(is_suprasegmental(x)) for x in chart.tones]
 
 		[self.assertFalse(is_suprasegmental(x)) for x in chart.consonants]
 		[self.assertFalse(is_suprasegmental(x)) for x in chart.vowels]
@@ -158,6 +163,21 @@ class IpaTestCase(TestCase):
 		[self.assertFalse(is_length(x)) for x in chart.tie_bars]
 		[self.assertFalse(is_length(x)) for x in chart.diacritics]
 		[self.assertFalse(is_length(x)) for x in chart.suprasegmentals]
+		[self.assertFalse(is_length(x)) for x in chart.tones]
+
+	def test_is_tone(self):
+		"""
+		is_tone should return True for IPA tone markers and False for other IPA
+		symbols.
+		"""
+		[self.assertTrue(is_tone(x)) for x in chart.tones]
+
+		[self.assertFalse(is_tone(x)) for x in chart.consonants]
+		[self.assertFalse(is_tone(x)) for x in chart.vowels]
+		[self.assertFalse(is_tone(x)) for x in chart.tie_bars]
+		[self.assertFalse(is_tone(x)) for x in chart.diacritics]
+		[self.assertFalse(is_tone(x)) for x in chart.suprasegmentals]
+		[self.assertFalse(is_tone(x)) for x in chart.lengths]
 
 	def test_get_precomposed_chars(self):
 		self.assertEqual(get_precomposed_chars(), set(['ç']))

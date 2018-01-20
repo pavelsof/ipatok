@@ -9,7 +9,7 @@ from ipatok.tokens import normalise, group, are_diphtong, tokenise
 class TokensTestCase(TestCase):
 	"""
 	The IPA strings are sourced from NorthEuraLex (languages: ady, ava, bul,
-	ckt, deu, eng).
+	ckt, cmn, deu, eng).
 	"""
 
 	def test_normalise(self):
@@ -120,6 +120,21 @@ class TokensTestCase(TestCase):
 
 			self.assertEqual(func('klaʊ̯ə', diphtongs=False), ['k', 'l', 'a', 'ʊ̯', 'ə'])
 			self.assertEqual(func('klaʊ̯ə', diphtongs=True), ['k', 'l', 'aʊ̯', 'ə'])
+
+	def test_tokenise_tones(self):
+		"""
+		Tones in IPA-compliant strings should be tokenised or ignored depending
+		on the tones flag, regardless of other flags' values.
+		"""
+		for comb in product([True, False], [True, False], [True, False]):
+			func = partial(tokenise,
+					strict=comb[0], replace=comb[1], diphtongs=comb[2])
+
+			self.assertEqual(func('t͡sɯ˦ɕy˦', tones=True), ['t͡s', 'ɯ', '˦', 'ɕ', 'y', '˦'])
+			self.assertEqual(func('t͡sɯ˦ɕy˦', tones=False), ['t͡s', 'ɯ', 'ɕ', 'y'])
+
+			self.assertEqual(func('ə̋ə̏', tones=True), ['ə̋', 'ə̏'])
+			self.assertEqual(func('ə̋ə̏', tones=False), ['ə', 'ə'])
 
 	def test_tokenise_splits_words(self):
 		"""

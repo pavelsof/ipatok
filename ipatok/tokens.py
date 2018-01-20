@@ -80,7 +80,7 @@ def are_diphtong(tokenA, tokenB):
 	return False
 
 
-def tokenise_word(string, strict=False, replace=False):
+def tokenise_word(string, strict=False, replace=False, tones=False):
 	"""
 	Tokenise the string into a list of tokens or raise ValueError if it cannot
 	be tokenised (relatively) unambiguously. The string should not include
@@ -88,7 +88,8 @@ def tokenise_word(string, strict=False, replace=False):
 
 	If strict=False, allow non-standard letters and diacritics, as well as
 	initial diacritic-only tokens (e.g. pre-aspiration). If replace=True,
-	replace some common non-IPA symbols with their IPA counterparts.
+	replace some common non-IPA symbols with their IPA counterparts. If
+	tones=False, ignore tone symbols.
 
 	Helper for tokenise(string, ..).
 	"""
@@ -108,7 +109,8 @@ def tokenise_word(string, strict=False, replace=False):
 
 		elif ipa.is_tie_bar(char):
 			if not tokens:
-				raise ValueError('The string starts with a tie bar: {}'.format(string))
+				raise ValueError(
+						'The string starts with a tie bar: {}'.format(string))
 			tokens[-1] += char
 
 		elif ipa.is_diacritic(char, strict) or ipa.is_length(char):
@@ -116,9 +118,19 @@ def tokenise_word(string, strict=False, replace=False):
 				tokens[-1] += char
 			else:
 				if strict is True:
-					raise ValueError('The string starts with a diacritic: {}'.format(string))
+					raise ValueError(
+							'The string starts with a diacritic: {}'.format(string))
 				else:
 					tokens.append(char)
+
+		elif tones and ipa.is_tone(char):
+			if unicodedata.combining(char):
+				if not tokens:
+					raise ValueError(
+							'The string starts with an accent mark: {}'.format(string))
+				tokens[-1] += char
+			else:
+				tokens.append(char)
 
 		elif ipa.is_suprasegmental(char):
 			pass
@@ -129,7 +141,7 @@ def tokenise_word(string, strict=False, replace=False):
 	return tokens
 
 
-def tokenise(string, strict=False, replace=False, diphtongs=False, merge=None):
+def tokenise(string, strict=False, replace=False, diphtongs=False, tones=False, merge=None):
 	"""
 	Tokenise an IPA string into a list of tokens. Raise ValueError if there is
 	a problem; if strict=True, this includes the string not being compliant to
@@ -137,7 +149,8 @@ def tokenise(string, strict=False, replace=False, diphtongs=False, merge=None):
 
 	If replace=True, replace some common non-IPA symbols with their IPA
 	counterparts. If diphtongs=True, try to group diphtongs into single tokens.
-	If merge is not None, use it for within-word token grouping.
+	If tones=True, do not ignore tone symbols. If merge is not None, use it for
+	within-word token grouping.
 
 	Part of ipatok's public API.
 	"""
@@ -145,7 +158,7 @@ def tokenise(string, strict=False, replace=False, diphtongs=False, merge=None):
 	output = []
 
 	for word in words:
-		tokens = tokenise_word(word, strict=strict, replace=replace)
+		tokens = tokenise_word(word, strict=strict, replace=replace, tones=tones)
 
 		if diphtongs is True:
 			tokens = group(are_diphtong, tokens)

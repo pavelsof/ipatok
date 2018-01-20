@@ -14,12 +14,13 @@ A simple IPA tokeniser, as simple as in:
 api
 ===
 
-``tokenise(string, strict=False, replace=False, diphtongs=False, merge=None)``
-takes an IPA string and returns a list of tokens. A token usually consists of a
-single letter together with its accompanying diacritics. If two letters are
-connected by a tie bar, they are also considered a single token. Except for
-length markers, suprasegmentals are excluded from the output. Whitespace is
-also ignored. The function accepts the following keyword arguments:
+``tokenise(string, strict=False, replace=False, diphtongs=False, tones=False,
+merge=None)`` takes an IPA string and returns a list of tokens. A token usually
+consists of a single letter together with its accompanying diacritics. If two
+letters are connected by a tie bar, they are also considered a single token.
+Except for length markers, suprasegmentals are excluded from the output.
+Whitespace is also ignored. The function accepts the following keyword
+arguments:
 
 - ``strict``: if set to ``True``, the function ensures that ``string`` complies
   to the IPA spec (`the 2015 revision`_); a ``ValueError`` is raised if it does
@@ -34,6 +35,9 @@ also ignored. The function accepts the following keyword arguments:
   vowels with their syllabic neighbours (e.g. ``aɪ̯`` would form a single
   token). If set to ``False`` (the default), vowels are not tokenised together
   unless there is a connecting tie bar (e.g. ``a͡ɪ``).
+- ``tones``: if set to ``True``, tone symbols are included in the output
+  (accent markers as diacritics and Chao letters as separate tokens). If set to
+  ``False`` (the default), these are ignored.
 - ``merge``: expects a ``str, str → bool`` function to be applied onto each
   pair of consecutive tokens; those for which the output is ``True`` are merged
   together. You can use this to, e.g., plug in your own diphtong detection

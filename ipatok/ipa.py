@@ -32,6 +32,7 @@ class Chart:
 		self.diacritics = set()
 		self.suprasegmentals = set()
 		self.lengths = set()
+		self.tones = set()
 
 		self.replacements = {}
 
@@ -48,7 +49,7 @@ class Chart:
 			'# diacritics': self.diacritics,
 			'# suprasegmentals': self.suprasegmentals,
 			'# lengths': self.lengths,
-			'# tones and word accents': self.suprasegmentals }
+			'# tones and word accents': self.tones }
 
 		curr_section = None
 
@@ -151,7 +152,9 @@ def is_suprasegmental(char):
 	Check whether the character is a suprasegmental according to the IPA spec.
 	This includes tones, word accents, and length markers.
 	"""
-	return (char in chart.suprasegmentals) or (char in chart.lengths)
+	return (char in chart.suprasegmentals) \
+			or (char in chart.lengths) \
+			or (char in chart.tones)
 
 
 @ensure_single_char
@@ -161,6 +164,14 @@ def is_length(char):
 	suprasegmentals, length markers are included in the tokenised output.
 	"""
 	return char in chart.lengths
+
+
+@ensure_single_char
+def is_tone(char):
+	"""
+	Check whether the character is a tone symbol.
+	"""
+	return char in chart.tones
 
 
 def get_precomposed_chars():
