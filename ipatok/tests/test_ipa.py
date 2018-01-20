@@ -167,17 +167,29 @@ class IpaTestCase(TestCase):
 
 	def test_is_tone(self):
 		"""
-		is_tone should return True for IPA tone markers and False for other IPA
-		symbols.
+		is_tone should always return True for IPA tone and word accent symbols
+		and False for other IPA symbols.
 		"""
-		[self.assertTrue(is_tone(x)) for x in chart.tones]
+		for strict in [True, False]:
+			func = partial(is_tone, strict=strict)
 
-		[self.assertFalse(is_tone(x)) for x in chart.consonants]
-		[self.assertFalse(is_tone(x)) for x in chart.vowels]
-		[self.assertFalse(is_tone(x)) for x in chart.tie_bars]
-		[self.assertFalse(is_tone(x)) for x in chart.diacritics]
-		[self.assertFalse(is_tone(x)) for x in chart.suprasegmentals]
-		[self.assertFalse(is_tone(x)) for x in chart.lengths]
+			[self.assertTrue(func(x)) for x in chart.tones]
+
+			[self.assertFalse(func(x)) for x in chart.consonants]
+			[self.assertFalse(func(x)) for x in chart.vowels]
+			[self.assertFalse(func(x)) for x in chart.tie_bars]
+			[self.assertFalse(func(x)) for x in chart.diacritics]
+			[self.assertFalse(func(x)) for x in chart.suprasegmentals]
+			[self.assertFalse(func(x)) for x in chart.lengths]
+
+	def test_is_tone_non_ipa(self):
+		"""
+		is_tone should return False for non-IPA tone symbols in strict mode and
+		True in non-strict mode.
+		"""
+		for char in ['꜀', 'ꜟ']:
+			self.assertFalse(is_tone(char, strict=True))
+			self.assertTrue(is_tone(char, strict=False))
 
 	def test_get_precomposed_chars(self):
 		self.assertEqual(get_precomposed_chars(), set(['ç']))

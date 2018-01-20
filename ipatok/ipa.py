@@ -167,11 +167,22 @@ def is_length(char):
 
 
 @ensure_single_char
-def is_tone(char):
+def is_tone(char, strict=True):
 	"""
-	Check whether the character is a tone symbol.
+	Check whether the character is a tone or word accent symbol. In strict mode
+	return True only for the symbols listed in the last group of the chart. If
+	strict=False, also accept symbols that belong to the Modifier Tone Letters
+	Unicode block [1].
+
+	[1]: http://www.unicode.org/charts/PDF/UA700.pdf
 	"""
-	return char in chart.tones
+	if char in chart.tones:
+		return True
+
+	if not strict:
+		return 0xA700 <= ord(char) <= 0xA71F
+
+	return False
 
 
 def get_precomposed_chars():

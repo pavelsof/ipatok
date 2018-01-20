@@ -123,11 +123,13 @@ def tokenise_word(string, strict=False, replace=False, tones=False):
 				else:
 					tokens.append(char)
 
-		elif tones and ipa.is_tone(char):
+		elif tones and ipa.is_tone(char, strict):
 			if unicodedata.combining(char):
 				if not tokens:
 					raise ValueError(
 							'The string starts with an accent mark: {}'.format(string))
+				tokens[-1] += char
+			elif tokens and ipa.is_tone(tokens[-1][-1], strict):
 				tokens[-1] += char
 			else:
 				tokens.append(char)

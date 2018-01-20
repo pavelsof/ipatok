@@ -133,6 +133,9 @@ class TokensTestCase(TestCase):
 			self.assertEqual(func('t͡sɯ˦ɕy˦', tones=True), ['t͡s', 'ɯ', '˦', 'ɕ', 'y', '˦'])
 			self.assertEqual(func('t͡sɯ˦ɕy˦', tones=False), ['t͡s', 'ɯ', 'ɕ', 'y'])
 
+			self.assertEqual(func('˨˩˦', tones=True), ['˨˩˦'])
+			self.assertEqual(func('˨˩˦', tones=False), [])
+
 			self.assertEqual(func('ə̋ə̏', tones=True), ['ə̋', 'ə̏'])
 			self.assertEqual(func('ə̋ə̏', tones=False), ['ə', 'ə'])
 

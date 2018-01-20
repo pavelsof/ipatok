@@ -35,9 +35,9 @@ arguments:
   vowels with their syllabic neighbours (e.g. ``aɪ̯`` would form a single
   token). If set to ``False`` (the default), vowels are not tokenised together
   unless there is a connecting tie bar (e.g. ``a͡ɪ``).
-- ``tones``: if set to ``True``, tone symbols are included in the output
-  (accent markers as diacritics and Chao letters as separate tokens). If set to
-  ``False`` (the default), these are ignored.
+- ``tones``: if set to ``True``, tone and word accents are included in the
+  output (accent markers as diacritics and Chao letters as separate tokens). If
+  set to ``False`` (the default), these are ignored.
 - ``merge``: expects a ``str, str → bool`` function to be applied onto each
   pair of consecutive tokens; those for which the output is ``True`` are merged
   together. You can use this to, e.g., plug in your own diphtong detection
