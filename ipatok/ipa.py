@@ -140,21 +140,26 @@ def is_diacritic(char, strict=True):
 		return True
 
 	if not strict:
-		return (not is_suprasegmental(char)) and (not is_tie_bar(char)) and \
-				(unicodedata.category(char) in ['Lm', 'Mn', 'Sk'])
+		return (unicodedata.category(char) in ['Lm', 'Mn', 'Sk']) \
+				and (not is_suprasegmental(char)) \
+				and (not is_tie_bar(char)) \
+				and (not 0xA700 <= ord(char) <= 0xA71F)
 
 	return False
 
 
 @ensure_single_char
-def is_suprasegmental(char):
+def is_suprasegmental(char, strict=True):
 	"""
 	Check whether the character is a suprasegmental according to the IPA spec.
 	This includes tones, word accents, and length markers.
+
+	In strict mode return True only if the diacritic is part of the IPA spec.
 	"""
-	return (char in chart.suprasegmentals) \
-			or (char in chart.lengths) \
-			or (char in chart.tones)
+	if (char in chart.suprasegmentals) or (char in chart.lengths):
+		return True
+
+	return is_tone(char, strict)
 
 
 @ensure_single_char

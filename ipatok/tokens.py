@@ -109,8 +109,7 @@ def tokenise_word(string, strict=False, replace=False, tones=False):
 
 		elif ipa.is_tie_bar(char):
 			if not tokens:
-				raise ValueError(
-						'The string starts with a tie bar: {}'.format(string))
+				raise ValueError('The string starts with a tie bar: {}'.format(string))
 			tokens[-1] += char
 
 		elif ipa.is_diacritic(char, strict) or ipa.is_length(char):
@@ -118,23 +117,21 @@ def tokenise_word(string, strict=False, replace=False, tones=False):
 				tokens[-1] += char
 			else:
 				if strict is True:
-					raise ValueError(
-							'The string starts with a diacritic: {}'.format(string))
+					raise ValueError('The string starts with a diacritic: {}'.format(string))
 				else:
 					tokens.append(char)
 
 		elif tones and ipa.is_tone(char, strict):
 			if unicodedata.combining(char):
 				if not tokens:
-					raise ValueError(
-							'The string starts with an accent mark: {}'.format(string))
+					raise ValueError('The string starts with an accent mark: {}'.format(string))
 				tokens[-1] += char
 			elif tokens and ipa.is_tone(tokens[-1][-1], strict):
 				tokens[-1] += char
 			else:
 				tokens.append(char)
 
-		elif ipa.is_suprasegmental(char):
+		elif ipa.is_suprasegmental(char, strict):
 			pass
 
 		else:

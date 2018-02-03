@@ -26,6 +26,7 @@ class IpaTestCase(TestCase):
 
 			self.assertFalse(func('ʰ'))
 			self.assertFalse(func('ʷ'))
+			self.assertFalse(func('꜍'))
 
 			[self.assertTrue(func(x)) for x in chart.consonants]
 			[self.assertTrue(func(x)) for x in chart.vowels]
@@ -57,6 +58,7 @@ class IpaTestCase(TestCase):
 
 		self.assertFalse(is_vowel('ʍ'))
 		self.assertFalse(is_vowel('ɧ'))
+		self.assertFalse(is_vowel('꜍'))
 
 		[self.assertTrue(is_vowel(x)) for x in chart.vowels]
 
@@ -103,6 +105,7 @@ class IpaTestCase(TestCase):
 			self.assertFalse(func('ʌ'))
 			self.assertFalse(func('ˌ'))
 			self.assertFalse(func('ː'))
+			self.assertFalse(func('꜍'))
 
 			[self.assertTrue(func(x)) for x in chart.diacritics]
 
@@ -127,22 +130,25 @@ class IpaTestCase(TestCase):
 		is_suprasegmental should return True for IPA suprasegmentals and False
 		for other IPA symbols.
 		"""
-		self.assertTrue(is_suprasegmental('ˈ'))
-		self.assertTrue(is_suprasegmental('◌̋'[1]))
-		self.assertTrue(is_suprasegmental('↘'))
+		for strict in [True, False]:
+			func = partial(is_suprasegmental, strict=strict)
 
-		self.assertFalse(is_suprasegmental('ɮ'))
-		self.assertFalse(is_suprasegmental('◌͜'[1]))
-		self.assertFalse(is_suprasegmental('◌̝'[1]))
+			self.assertTrue(func('ˈ'))
+			self.assertTrue(func('◌̋'[1]))
+			self.assertTrue(func('↘'))
 
-		[self.assertTrue(is_suprasegmental(x)) for x in chart.suprasegmentals]
-		[self.assertTrue(is_suprasegmental(x)) for x in chart.lengths]
-		[self.assertTrue(is_suprasegmental(x)) for x in chart.tones]
+			self.assertFalse(func('ɮ'))
+			self.assertFalse(func('◌͜'[1]))
+			self.assertFalse(func('◌̝'[1]))
 
-		[self.assertFalse(is_suprasegmental(x)) for x in chart.consonants]
-		[self.assertFalse(is_suprasegmental(x)) for x in chart.vowels]
-		[self.assertFalse(is_suprasegmental(x)) for x in chart.tie_bars]
-		[self.assertFalse(is_suprasegmental(x)) for x in chart.diacritics]
+			[self.assertTrue(func(x)) for x in chart.suprasegmentals]
+			[self.assertTrue(func(x)) for x in chart.lengths]
+			[self.assertTrue(func(x)) for x in chart.tones]
+
+			[self.assertFalse(func(x)) for x in chart.consonants]
+			[self.assertFalse(func(x)) for x in chart.vowels]
+			[self.assertFalse(func(x)) for x in chart.tie_bars]
+			[self.assertFalse(func(x)) for x in chart.diacritics]
 
 	def test_is_length(self):
 		"""
@@ -155,6 +161,7 @@ class IpaTestCase(TestCase):
 
 		self.assertFalse(is_length('ʼ'))
 		self.assertFalse(is_length('◌̃'[1]))
+		self.assertFalse(is_length('꜍'))
 
 		[self.assertTrue(is_length(x)) for x in chart.lengths]
 
@@ -187,7 +194,7 @@ class IpaTestCase(TestCase):
 		is_tone should return False for non-IPA tone symbols in strict mode and
 		True in non-strict mode.
 		"""
-		for char in ['꜀', 'ꜟ']:
+		for char in ['꜀', '꜍', 'ꜟ']:
 			self.assertFalse(is_tone(char, strict=True))
 			self.assertTrue(is_tone(char, strict=False))
 

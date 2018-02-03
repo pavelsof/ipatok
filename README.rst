@@ -47,11 +47,15 @@ arguments:
 
 ``tokenize`` is an alias for ``tokenise``.
 
+
+other functions
+---------------
+
 ``replace_digits_with_chao(string, inverse=False)`` takes an IPA string and
-replaces the digits 1-5 (also in superscript) with Chao tone letters. Smaller
-digits are converted into lower tones by default, and into higher tones if
-``inverse=True``. Equal consecutive digits are collapsed into a single Chao
-letter (e.g. ``55 → ˥``).
+replaces the digits 1-5 (also in superscript) with Chao tone letters. If
+``inverse=True``, smaller digits are converted into higher tones; otherwise,
+they are converted into lower tones (the default).  Equal consecutive digits
+are collapsed into a single Chao letter (e.g. ``55 → ˥``).
 
 >>> tokenise(replace_numbers_with_chao('ɕia⁵¹ɕyɛ²¹⁴'), tones=True)
 ['ɕ', 'i', 'a', '˥˩', 'ɕ', 'y', 'ɛ', '˨˩˦']
@@ -69,6 +73,8 @@ would be treated as follows:
 - if it is a non-modifier letter (e.g. ``Γ``), it is considered a consonant;
 - if it is a modifier (e.g. ``ˀ``) or a combining mark (e.g. ``ə̇``), it is
   considered a diacritic;
+- if it is a `modifier tone letter`_ (e.g. ``꜍``), it is considered a tone
+  symbol;
 - if it is neither of those, it is ignored.
 
 Regardless of the value of ``strict``, whitespace characters and underscores
@@ -108,7 +114,9 @@ licence
 
 MIT. Do as you please and praise the snake gods.
 
+
 .. _`the 2015 revision`: https://www.internationalphoneticassociation.org/sites/default/files/phonsymbol.pdf
+.. _`modifier tone letter`: http://www.unicode.org/charts/PDF/UA700.pdf
 .. _`Cheese Shop`: https://pypi.python.org/pypi/ipatok
 .. _`lingpy`: https://pypi.python.org/pypi/lingpy
 .. _`ipa2tokens`: http://lingpy.org/reference/lingpy.sequence.html#lingpy.sequence.sound_classes.ipa2tokens
