@@ -136,6 +136,8 @@ class IpaTestCase(TestCase):
 			self.assertTrue(func('ˈ'))
 			self.assertTrue(func('◌̋'[1]))
 			self.assertTrue(func('↘'))
+			self.assertTrue(func('.'))
+			self.assertTrue(func('‿'))
 
 			self.assertFalse(func('ɮ'))
 			self.assertFalse(func('◌͜'[1]))
