@@ -177,3 +177,28 @@ def tokenise(string, strict=False, replace=False, diphtongs=False, tones=False, 
 Provide for the alternative spelling.
 """
 tokenize = tokenise
+
+
+def replace_digits_with_chao(string, inverse=False):
+	"""
+	Replace the digits 1-5 (also in superscript) with Chao tone letters. Equal
+	consecutive digits are collapsed into a single Chao letter.
+
+	If inverse=True, smaller digits are converted into higher tones; otherwise,
+	they are converted into lower tones (the default).
+
+	Part of ipatok's public API.
+	"""
+	chao_letters = '˩˨˧˦˥'
+
+	if inverse:
+		chao_letters = chao_letters[::-1]
+
+	string = string.translate(str.maketrans('¹²³⁴⁵', '12345'))
+	string = string.translate(str.maketrans('12345', chao_letters))
+
+	string = ''.join([
+		char for index, char in enumerate(string)
+		if not (index and char in chao_letters and string[index-1] == char)])
+
+	return string

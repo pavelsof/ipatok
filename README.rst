@@ -25,7 +25,7 @@ arguments:
 - ``strict``: if set to ``True``, the function ensures that ``string`` complies
   to the IPA spec (`the 2015 revision`_); a ``ValueError`` is raised if it does
   not. If set to ``False`` (the default), the role of non-IPA characters is
-  guessed based on their Unicode category.
+  guessed based on their Unicode category (cf. the pitfalls section below).
 - ``replace``: if set to ``True``, the function replaces some common
   substitutes with their IPA-compliant counterparts, e.g. ``g → ɡ``, ``ɫ → l̴``,
   ``ʦ → t͡s``. Refer to ``ipatok/data/replacements.tsv`` for a full list. If
@@ -46,6 +46,15 @@ arguments:
   >>> tokenise(string, diphtongs=False, merge=custom_func)
 
 ``tokenize`` is an alias for ``tokenise``.
+
+``replace_digits_with_chao(string, inverse=False)`` takes an IPA string and
+replaces the digits 1-5 (also in superscript) with Chao tone letters. Smaller
+digits are converted into lower tones by default, and into higher tones if
+``inverse=True``. Equal consecutive digits are collapsed into a single Chao
+letter (e.g. ``55 → ˥``).
+
+>>> tokenise(replace_numbers_with_chao('ɕia⁵¹ɕyɛ²¹⁴'), tones=True)
+['ɕ', 'i', 'a', '˥˩', 'ɕ', 'y', 'ɛ', '˨˩˦']
 
 
 pitfalls

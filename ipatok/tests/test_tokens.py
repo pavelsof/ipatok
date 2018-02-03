@@ -2,7 +2,8 @@ from functools import partial
 from itertools import product
 from unittest import TestCase
 
-from ipatok.tokens import normalise, group, are_diphtong, tokenise
+from ipatok.tokens import (
+		normalise, group, are_diphtong, tokenise, replace_digits_with_chao)
 
 
 
@@ -153,3 +154,20 @@ class TokensTestCase(TestCase):
 
 			self.assertEqual(func('etɬə tite'), ['e', 't', 'ɬ', 'ə', 't', 'i', 't', 'e'])
 			self.assertEqual(func('etɬə_tite'), ['e', 't', 'ɬ', 'ə', 't', 'i', 't', 'e'])
+
+	def test_replace_digits_with_chao(self):
+		"""
+		Digits should be correctly replaced with Chao tone letters, regardless
+		of the flag value and whether superscript or not.
+		"""
+		self.assertEqual(replace_digits_with_chao('ɕiŋ⁵⁵ɕiŋ²'), 'ɕiŋ˥ɕiŋ˨')
+		self.assertEqual(replace_digits_with_chao('ɕiŋ55ɕiŋ2'), 'ɕiŋ˥ɕiŋ˨')
+
+		self.assertEqual(replace_digits_with_chao('ɕia⁵¹ɕyɛ²¹⁴'), 'ɕia˥˩ɕyɛ˨˩˦')
+		self.assertEqual(replace_digits_with_chao('ɕia51ɕyɛ214'), 'ɕia˥˩ɕyɛ˨˩˦')
+
+		self.assertEqual(replace_digits_with_chao('ɕiŋ⁵⁵ɕiŋ²', inverse=True), 'ɕiŋ˩ɕiŋ˦')
+		self.assertEqual(replace_digits_with_chao('ɕiŋ55ɕiŋ2', inverse=True), 'ɕiŋ˩ɕiŋ˦')
+
+		self.assertEqual(replace_digits_with_chao('ɕia⁵¹ɕyɛ²¹⁴', inverse=True), 'ɕia˩˥ɕyɛ˦˥˨')
+		self.assertEqual(replace_digits_with_chao('ɕia51ɕyɛ214', inverse=True), 'ɕia˩˥ɕyɛ˦˥˨')
