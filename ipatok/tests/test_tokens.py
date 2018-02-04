@@ -43,9 +43,9 @@ class TokensTestCase(TestCase):
 		IPA-compliant strings should be correctly tokenised, regardless of the
 		flag values.
 		"""
-		for comb in product([True, False], [True, False], [True, False], [True, False]):
-			func = partial(tokenise,
-					strict=comb[0], replace=comb[1], diphtongs=comb[2], tones=comb[3])
+		for comb in product(*[[True, False]] * 5):
+			func = partial(tokenise, strict=comb[0], replace=comb[1],
+							diphtongs=comb[2], tones=comb[3], unknown=comb[4])
 
 			self.assertEqual(func('miq͡χː'), ['m', 'i', 'q͡χː'])
 			self.assertEqual(func('ʃːjeq͡χːʼjer'), ['ʃː', 'j', 'e', 'q͡χːʼ', 'j', 'e', 'r'])
@@ -68,8 +68,9 @@ class TokensTestCase(TestCase):
 		Tokenising non-compliant strings should raise ValueError unless strict
 		is False, regardless of the other flags' values.
 		"""
-		for comb in product([True, False], [True, False], [True, False]):
-			func = partial(tokenise, replace=comb[0], diphtongs=comb[1], tones=comb[2])
+		for comb in product(*[[True, False]] * 4):
+			func = partial(tokenise, replace=comb[0],
+							diphtongs=comb[1], tones=comb[2], unknown=comb[3])
 
 			with self.assertRaises(ValueError):
 				func('ʷəˈʁʷa', strict=True)
@@ -88,8 +89,9 @@ class TokensTestCase(TestCase):
 		Strings containing common substitutes but otherwise IPA-compliant
 		should pass the strictness check only if replace is True.
 		"""
-		for comb in product([True, False], [True, False]):
-			func = partial(tokenise, strict=True, diphtongs=comb[0], tones=comb[1])
+		for comb in product(*[[True, False]] * 3):
+			func = partial(tokenise, strict=True,
+							diphtongs=comb[0], tones=comb[1], unknown=comb[2])
 
 			with self.assertRaises(ValueError):
 				func('t͡ʃɛɫɔ', replace=False)
@@ -104,8 +106,9 @@ class TokensTestCase(TestCase):
 		Diphtongs in IPA-compliant strings should be merged depending on the
 		diphtongs flag, regardless of the other flags' values.
 		"""
-		for comb in product([True, False], [True, False], [True, False]):
-			func = partial(tokenise, strict=comb[0], replace=comb[1], tones=comb[2])
+		for comb in product(*[[True, False]] * 4):
+			func = partial(tokenise, strict=comb[0],
+							replace=comb[1], tones=comb[2], unknown=comb[3])
 
 			self.assertEqual(func('t͡saɪ̯çən', diphtongs=False), ['t͡s', 'a', 'ɪ̯', 'ç', 'ə', 'n'])
 			self.assertEqual(func('t͡saɪ̯çən', diphtongs=True), ['t͡s', 'aɪ̯', 'ç', 'ə', 'n'])
@@ -127,9 +130,9 @@ class TokensTestCase(TestCase):
 		Tones in IPA-compliant strings should be tokenised or ignored depending
 		on the tones flag, regardless of other flags' values.
 		"""
-		for comb in product([True, False], [True, False], [True, False]):
-			func = partial(tokenise,
-					strict=comb[0], replace=comb[1], diphtongs=comb[2])
+		for comb in product(*[[True, False]] * 4):
+			func = partial(tokenise, strict=comb[0],
+							replace=comb[1], diphtongs=comb[2], unknown=comb[3])
 
 			self.assertEqual(func('t͡sɯ˦ɕy˦', tones=True), ['t͡s', 'ɯ', '˦', 'ɕ', 'y', '˦'])
 			self.assertEqual(func('t͡sɯ˦ɕy˦', tones=False), ['t͡s', 'ɯ', 'ɕ', 'y'])
@@ -145,8 +148,9 @@ class TokensTestCase(TestCase):
 		Modifier tone letters should raise ValueError unless strict is False,
 		and should be otherwise tokenised only if tones is True.
 		"""
-		for comb in product([True, False], [True, False]):
-			func = partial(tokenise, replace=comb[0], diphtongs=comb[1])
+		for comb in product(*[[True, False]] * 3):
+			func = partial(tokenise,
+							replace=comb[0], diphtongs=comb[1], unknown=comb[2])
 
 			for tones in [True, False]:
 				with self.assertRaises(ValueError):
@@ -155,14 +159,29 @@ class TokensTestCase(TestCase):
 			self.assertEqual(func('꜍꜈', strict=False, tones=False), [])
 			self.assertEqual(func('꜍꜈', strict=False, tones=True), ['꜍꜈'])
 
+	def test_tokenise_unknown(self):
+		"""
+		Unknown symbols should raise ValueError unless strict is False, in
+		which case they should be ignored depending on the unknown flag.
+		"""
+		for comb in product(*[[True, False]] * 3):
+			func = partial(tokenise, replace=comb[0], diphtongs=comb[1], tones=comb[2])
+
+			for unknown in [True, False]:
+				with self.assertRaises(ValueError):
+					func('-/$', strict=True, unknown=unknown)
+
+			self.assertEqual(func('-/$', unknown=True), ['-', '/', '$'])
+			self.assertEqual(func('-/$', unknown=False), [])
+
 	def test_tokenise_splits_words(self):
 		"""
 		Whitespace characters and underscores should serve as word boundaries,
 		regardless of the flag values.
 		"""
-		for comb in product([True, False], [True, False], [True, False]):
-			func = partial(tokenise,
-					strict=comb[0], replace=comb[1], diphtongs=comb[2])
+		for comb in product(*[[True, False]] * 5):
+			func = partial(tokenise, strict=comb[0], replace=comb[1],
+							diphtongs=comb[2], tones=comb[3], unknown=comb[4])
 
 			self.assertEqual(func('prɤst na krak'), ['p', 'r', 'ɤ', 's', 't', 'n', 'a', 'k', 'r', 'a', 'k'])
 			self.assertEqual(func('prɤst_na_krak'), ['p', 'r', 'ɤ', 's', 't', 'n', 'a', 'k', 'r', 'a', 'k'])

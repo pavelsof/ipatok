@@ -15,12 +15,12 @@ api
 ===
 
 ``tokenise(string, strict=False, replace=False, diphtongs=False, tones=False,
-merge=None)`` takes an IPA string and returns a list of tokens. A token usually
-consists of a single letter together with its accompanying diacritics. If two
-letters are connected by a tie bar, they are also considered a single token.
-Except for length markers, suprasegmentals are excluded from the output.
-Whitespace is also ignored. The function accepts the following keyword
-arguments:
+unknown=False, merge=None)`` takes an IPA string and returns a list of tokens.
+A token usually consists of a single letter together with its accompanying
+diacritics. If two letters are connected by a tie bar, they are also considered
+a single token.  Except for length markers, suprasegmentals are excluded from
+the output.  Whitespace is also ignored. The function accepts the following
+keyword arguments:
 
 - ``strict``: if set to ``True``, the function ensures that ``string`` complies
   to the IPA spec (`the 2015 revision`_); a ``ValueError`` is raised if it does
@@ -38,6 +38,10 @@ arguments:
 - ``tones``: if set to ``True``, tone and word accents are included in the
   output (accent markers as diacritics and Chao letters as separate tokens). If
   set to ``False`` (the default), these are ignored.
+- ``unknown``: if set to ``True``, the output includes (as separate tokens)
+  symbols that cannot be classified as letters, diacritics or suprasegmentals
+  (e.g. ``-``, ``/``, ``$``). If set to ``False`` (the default), such symbols
+  are ignored. It does not have effect if ``strict`` is set to ``True``.
 - ``merge``: expects a ``str, str → bool`` function to be applied onto each
   pair of consecutive tokens; those for which the output is ``True`` are merged
   together. You can use this to, e.g., plug in your own diphtong detection
@@ -75,7 +79,7 @@ would be treated as follows:
   considered a diacritic;
 - if it is a `modifier tone letter`_ (e.g. ``꜍``), it is considered a tone
   symbol;
-- if it is neither of those, it is ignored.
+- if it is neither of those, it is considered an unknown symbol.
 
 Regardless of the value of ``strict``, whitespace characters and underscores
 are considered to be word boundaries, i.e. there would not be tokens grouping

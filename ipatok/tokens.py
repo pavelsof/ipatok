@@ -80,7 +80,8 @@ def are_diphtong(tokenA, tokenB):
 	return False
 
 
-def tokenise_word(string, strict=False, replace=False, tones=False):
+def tokenise_word(string,
+					strict=False, replace=False, tones=False, unknown=False):
 	"""
 	Tokenise the string into a list of tokens or raise ValueError if it cannot
 	be tokenised (relatively) unambiguously. The string should not include
@@ -89,13 +90,14 @@ def tokenise_word(string, strict=False, replace=False, tones=False):
 	If strict=False, allow non-standard letters and diacritics, as well as
 	initial diacritic-only tokens (e.g. pre-aspiration). If replace=True,
 	replace some common non-IPA symbols with their IPA counterparts. If
-	tones=False, ignore tone symbols.
+	tones=False, ignore tone symbols. If unknown=False, ignore symbols that
+	cannot be classified into a relevant category.
 
 	Helper for tokenise(string, ..).
 	"""
 	string = normalise(string)
 
-	if replace is True:
+	if replace:
 		string = ipa.replace_substitutes(string)
 
 	tokens = []
@@ -116,7 +118,7 @@ def tokenise_word(string, strict=False, replace=False, tones=False):
 			if tokens:
 				tokens[-1] += char
 			else:
-				if strict is True:
+				if strict:
 					raise ValueError('The string starts with a diacritic: {}'.format(string))
 				else:
 					tokens.append(char)
@@ -135,12 +137,18 @@ def tokenise_word(string, strict=False, replace=False, tones=False):
 			pass
 
 		else:
-			raise ValueError('Unrecognised char: {} ({})'.format(char, unicodedata.name(char)))
+			if strict:
+				raise ValueError('Unrecognised char: {} ({})'.format(char, unicodedata.name(char)))
+			elif unknown:
+				tokens.append(char)
+			else:
+				pass
 
 	return tokens
 
 
-def tokenise(string, strict=False, replace=False, diphtongs=False, tones=False, merge=None):
+def tokenise(string, strict=False, replace=False,
+						diphtongs=False, tones=False, unknown=False, merge=None):
 	"""
 	Tokenise an IPA string into a list of tokens. Raise ValueError if there is
 	a problem; if strict=True, this includes the string not being compliant to
@@ -148,8 +156,9 @@ def tokenise(string, strict=False, replace=False, diphtongs=False, tones=False, 
 
 	If replace=True, replace some common non-IPA symbols with their IPA
 	counterparts. If diphtongs=True, try to group diphtongs into single tokens.
-	If tones=True, do not ignore tone symbols. If merge is not None, use it for
-	within-word token grouping.
+	If tones=True, do not ignore tone symbols. If unknown=True, do not ignore
+	symbols that cannot be classified into a relevant category. If merge is not
+	None, use it for within-word token grouping.
 
 	Part of ipatok's public API.
 	"""
@@ -157,9 +166,9 @@ def tokenise(string, strict=False, replace=False, diphtongs=False, tones=False, 
 	output = []
 
 	for word in words:
-		tokens = tokenise_word(word, strict=strict, replace=replace, tones=tones)
+		tokens = tokenise_word(word, strict, replace, tones, unknown)
 
-		if diphtongs is True:
+		if diphtongs:
 			tokens = group(are_diphtong, tokens)
 
 		if merge is not None:
