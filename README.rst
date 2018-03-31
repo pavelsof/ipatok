@@ -111,6 +111,7 @@ other IPA packages
 - ipapy_ is a package for working with IPA strings.
 - ipalint_ provides a command-line tool for checking IPA datasets for errors
   and inconsistencies.
+- asjp_ provides functions for converting between IPA and ASJP.
 
 
 licence
@@ -126,3 +127,4 @@ MIT. Do as you please and praise the snake gods.
 .. _`ipa2tokens`: http://lingpy.org/reference/lingpy.sequence.html#lingpy.sequence.sound_classes.ipa2tokens
 .. _`ipapy`: https://pypi.python.org/pypi/ipapy
 .. _`ipalint`: https://pypi.python.org/pypi/ipalint
+.. _`asjp`: https://pypi.python.org/pypi/asjp
