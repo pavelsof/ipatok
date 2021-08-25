@@ -14,12 +14,12 @@ A simple IPA tokeniser, as simple as in:
 api
 ===
 
-``tokenise(string, strict=False, replace=False, diphtongs=False, tones=False,
+``tokenise(string, strict=False, replace=False, diphthongs=False, tones=False,
 unknown=False, merge=None)`` takes an IPA string and returns a list of tokens.
 A token usually consists of a single letter together with its accompanying
 diacritics. If two letters are connected by a tie bar, they are also considered
-a single token.  Except for length markers, suprasegmentals are excluded from
-the output.  Whitespace is also ignored. The function accepts the following
+a single token. Except for length markers, suprasegmentals are excluded from
+the output. Whitespace is also ignored. The function accepts the following
 keyword arguments:
 
 - ``strict``: if set to ``True``, the function ensures that ``string`` complies
@@ -31,7 +31,7 @@ keyword arguments:
   ``ʦ → t͡s``. Refer to ``ipatok/data/replacements.tsv`` for a full list. If
   both ``strict`` and ``replace`` are set to ``True``, replacing is done before
   checking for spec compliance.
-- ``diphtongs``: if set to ``True``, the function groups together non-syllabic
+- ``diphthongs``: if set to ``True``, the function groups together non-syllabic
   vowels with their syllabic neighbours (e.g. ``aɪ̯`` would form a single
   token). If set to ``False`` (the default), vowels are not tokenised together
   unless there is a connecting tie bar (e.g. ``a͡ɪ``).
@@ -44,10 +44,10 @@ keyword arguments:
   are ignored. It does not have effect if ``strict`` is set to ``True``.
 - ``merge``: expects a ``str, str → bool`` function to be applied onto each
   pair of consecutive tokens; those for which the output is ``True`` are merged
-  together. You can use this to, e.g., plug in your own diphtong detection
+  together. You can use this to, e.g., plug in your own diphthong detection
   algorithm:
 
-  >>> tokenise(string, diphtongs=False, merge=custom_func)
+  >>> tokenise(string, diphthongs=False, merge=custom_func)
 
 ``tokenize`` is an alias for ``tokenise``.
 

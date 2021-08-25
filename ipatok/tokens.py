@@ -46,17 +46,17 @@ def group(merge_func, tokens):
 	return output
 
 
-def are_diphtong(tokenA, tokenB):
+def are_diphthong(tokenA, tokenB):
 	"""
-	Check (naively) whether the two tokens can form a diphtong. This would be a
-	sequence of vowels of which no more than one is syllabic. Vowel sequences
+	Check (naively) whether the two tokens can form a diphthong. This would be
+	a sequence of vowels of which no more than one is syllabic. Vowel sequences
 	connected with a tie bar would already be handled in tokenise_word, so are
 	not checked for here.
 
-	Users who want more sophisticated diphtong detection should instead write
+	Users who want more sophisticated diphthong detection should instead write
 	their own function and do something like::
 
-		tokenise(string, diphtong=False, merge=user_func)
+		tokenise(string, diphthong=False, merge=user_func)
 
 	Helper for tokenise(string, ..).
 	"""
@@ -148,17 +148,17 @@ def tokenise_word(string,
 
 
 def tokenise(string, strict=False, replace=False,
-						diphtongs=False, tones=False, unknown=False, merge=None):
+					diphthongs=False, tones=False, unknown=False, merge=None):
 	"""
 	Tokenise an IPA string into a list of tokens. Raise ValueError if there is
 	a problem; if strict=True, this includes the string not being compliant to
 	the IPA spec.
 
 	If replace=True, replace some common non-IPA symbols with their IPA
-	counterparts. If diphtongs=True, try to group diphtongs into single tokens.
-	If tones=True, do not ignore tone symbols. If unknown=True, do not ignore
-	symbols that cannot be classified into a relevant category. If merge is not
-	None, use it for within-word token grouping.
+	counterparts. If diphthongs=True, try to group diphthongs into single
+	tokens. If tones=True, do not ignore tone symbols. If unknown=True, do not
+	ignore symbols that cannot be classified into a relevant category. If merge
+	is not None, use it for within-word token grouping.
 
 	Part of ipatok's public API.
 	"""
@@ -168,8 +168,8 @@ def tokenise(string, strict=False, replace=False,
 	for word in words:
 		tokens = tokenise_word(word, strict, replace, tones, unknown)
 
-		if diphtongs:
-			tokens = group(are_diphtong, tokens)
+		if diphthongs:
+			tokens = group(are_diphthong, tokens)
 
 		if merge is not None:
 			tokens = group(merge, tokens)

@@ -3,7 +3,7 @@ from itertools import product
 from unittest import TestCase
 
 from ipatok.tokens import (
-		normalise, group, are_diphtong, tokenise, replace_digits_with_chao)
+		normalise, group, are_diphthong, tokenise, replace_digits_with_chao)
 
 
 
@@ -27,16 +27,16 @@ class TokensTestCase(TestCase):
 		for i in range(4, 1):
 			self.assertEqual(group(lambda x, y: x == y, ['a'] * i), ['a' * i])
 
-	def test_are_diphtong(self):
-		self.assertTrue(are_diphtong('ə', 'ə̯'))
-		self.assertTrue(are_diphtong('ə̯', 'ə'))
-		self.assertTrue(are_diphtong('ə̯', 'ə̯'))
-		self.assertFalse(are_diphtong('ə', 'ə'))
+	def test_are_diphthong(self):
+		self.assertTrue(are_diphthong('ə', 'ə̯'))
+		self.assertTrue(are_diphthong('ə̯', 'ə'))
+		self.assertTrue(are_diphthong('ə̯', 'ə̯'))
+		self.assertFalse(are_diphthong('ə', 'ə'))
 
-		self.assertTrue(are_diphtong('əə̯', 'ə̯'))
-		self.assertTrue(are_diphtong('ə̯ə', 'ə̯'))
-		self.assertFalse(are_diphtong('əə̯', 'ə'))
-		self.assertFalse(are_diphtong('ə̯ə', 'ə'))
+		self.assertTrue(are_diphthong('əə̯', 'ə̯'))
+		self.assertTrue(are_diphthong('ə̯ə', 'ə̯'))
+		self.assertFalse(are_diphthong('əə̯', 'ə'))
+		self.assertFalse(are_diphthong('ə̯ə', 'ə'))
 
 	def test_tokenise(self):
 		"""
@@ -45,7 +45,7 @@ class TokensTestCase(TestCase):
 		"""
 		for comb in product(*[[True, False]] * 5):
 			func = partial(tokenise, strict=comb[0], replace=comb[1],
-							diphtongs=comb[2], tones=comb[3], unknown=comb[4])
+							diphthongs=comb[2], tones=comb[3], unknown=comb[4])
 
 			self.assertEqual(func('miq͡χː'), ['m', 'i', 'q͡χː'])
 			self.assertEqual(func('ʃːjeq͡χːʼjer'), ['ʃː', 'j', 'e', 'q͡χːʼ', 'j', 'e', 'r'])
@@ -70,7 +70,7 @@ class TokensTestCase(TestCase):
 		"""
 		for comb in product(*[[True, False]] * 4):
 			func = partial(tokenise, replace=comb[0],
-							diphtongs=comb[1], tones=comb[2], unknown=comb[3])
+							diphthongs=comb[1], tones=comb[2], unknown=comb[3])
 
 			with self.assertRaises(ValueError):
 				func('ʷəˈʁʷa', strict=True)
@@ -91,7 +91,7 @@ class TokensTestCase(TestCase):
 		"""
 		for comb in product(*[[True, False]] * 3):
 			func = partial(tokenise, strict=True,
-							diphtongs=comb[0], tones=comb[1], unknown=comb[2])
+							diphthongs=comb[0], tones=comb[1], unknown=comb[2])
 
 			with self.assertRaises(ValueError):
 				func('t͡ʃɛɫɔ', replace=False)
@@ -101,29 +101,29 @@ class TokensTestCase(TestCase):
 				func('ɫuna', replace=False)
 			self.assertEqual(func('ɫuna', replace=True), ['l̴', 'u', 'n', 'a'])
 
-	def test_tokenise_diphtongs(self):
+	def test_tokenise_diphthongs(self):
 		"""
-		Diphtongs in IPA-compliant strings should be merged depending on the
-		diphtongs flag, regardless of the other flags' values.
+		Diphthongs in IPA-compliant strings should be merged depending on the
+		diphthongs flag, regardless of the other flags' values.
 		"""
 		for comb in product(*[[True, False]] * 4):
 			func = partial(tokenise, strict=comb[0],
 							replace=comb[1], tones=comb[2], unknown=comb[3])
 
-			self.assertEqual(func('t͡saɪ̯çən', diphtongs=False), ['t͡s', 'a', 'ɪ̯', 'ç', 'ə', 'n'])
-			self.assertEqual(func('t͡saɪ̯çən', diphtongs=True), ['t͡s', 'aɪ̯', 'ç', 'ə', 'n'])
+			self.assertEqual(func('t͡saɪ̯çən', diphthongs=False), ['t͡s', 'a', 'ɪ̯', 'ç', 'ə', 'n'])
+			self.assertEqual(func('t͡saɪ̯çən', diphthongs=True), ['t͡s', 'aɪ̯', 'ç', 'ə', 'n'])
 
-			self.assertEqual(func('hɛɐ̯t͡s', diphtongs=False), ['h', 'ɛ', 'ɐ̯', 't͡s'])
-			self.assertEqual(func('hɛɐ̯t͡s', diphtongs=True), ['h', 'ɛɐ̯', 't͡s'])
+			self.assertEqual(func('hɛɐ̯t͡s', diphthongs=False), ['h', 'ɛ', 'ɐ̯', 't͡s'])
+			self.assertEqual(func('hɛɐ̯t͡s', diphthongs=True), ['h', 'ɛɐ̯', 't͡s'])
 
-			self.assertEqual(func('moːɐ̯', diphtongs=False), ['m', 'oː', 'ɐ̯'])
-			self.assertEqual(func('moːɐ̯', diphtongs=True), ['m', 'oːɐ̯'])
+			self.assertEqual(func('moːɐ̯', diphthongs=False), ['m', 'oː', 'ɐ̯'])
+			self.assertEqual(func('moːɐ̯', diphthongs=True), ['m', 'oːɐ̯'])
 
-			self.assertEqual(func('aɪ̯çhœɐ̯nçən', diphtongs=False), ['a', 'ɪ̯', 'ç', 'h', 'œ', 'ɐ̯', 'n', 'ç', 'ə', 'n'])
-			self.assertEqual(func('aɪ̯çhœɐ̯nçən', diphtongs=True), ['aɪ̯', 'ç', 'h', 'œɐ̯', 'n', 'ç', 'ə', 'n'])
+			self.assertEqual(func('aɪ̯çhœɐ̯nçən', diphthongs=False), ['a', 'ɪ̯', 'ç', 'h', 'œ', 'ɐ̯', 'n', 'ç', 'ə', 'n'])
+			self.assertEqual(func('aɪ̯çhœɐ̯nçən', diphthongs=True), ['aɪ̯', 'ç', 'h', 'œɐ̯', 'n', 'ç', 'ə', 'n'])
 
-			self.assertEqual(func('klaʊ̯ə', diphtongs=False), ['k', 'l', 'a', 'ʊ̯', 'ə'])
-			self.assertEqual(func('klaʊ̯ə', diphtongs=True), ['k', 'l', 'aʊ̯', 'ə'])
+			self.assertEqual(func('klaʊ̯ə', diphthongs=False), ['k', 'l', 'a', 'ʊ̯', 'ə'])
+			self.assertEqual(func('klaʊ̯ə', diphthongs=True), ['k', 'l', 'aʊ̯', 'ə'])
 
 	def test_tokenise_tones(self):
 		"""
@@ -132,7 +132,7 @@ class TokensTestCase(TestCase):
 		"""
 		for comb in product(*[[True, False]] * 4):
 			func = partial(tokenise, strict=comb[0],
-							replace=comb[1], diphtongs=comb[2], unknown=comb[3])
+							replace=comb[1], diphthongs=comb[2], unknown=comb[3])
 
 			self.assertEqual(func('t͡sɯ˦ɕy˦', tones=True), ['t͡s', 'ɯ', '˦', 'ɕ', 'y', '˦'])
 			self.assertEqual(func('t͡sɯ˦ɕy˦', tones=False), ['t͡s', 'ɯ', 'ɕ', 'y'])
@@ -150,7 +150,7 @@ class TokensTestCase(TestCase):
 		"""
 		for comb in product(*[[True, False]] * 3):
 			func = partial(tokenise,
-							replace=comb[0], diphtongs=comb[1], unknown=comb[2])
+							replace=comb[0], diphthongs=comb[1], unknown=comb[2])
 
 			for tones in [True, False]:
 				with self.assertRaises(ValueError):
@@ -165,7 +165,7 @@ class TokensTestCase(TestCase):
 		which case they should be ignored depending on the unknown flag.
 		"""
 		for comb in product(*[[True, False]] * 3):
-			func = partial(tokenise, replace=comb[0], diphtongs=comb[1], tones=comb[2])
+			func = partial(tokenise, replace=comb[0], diphthongs=comb[1], tones=comb[2])
 
 			for unknown in [True, False]:
 				with self.assertRaises(ValueError):
@@ -181,7 +181,7 @@ class TokensTestCase(TestCase):
 		"""
 		for comb in product(*[[True, False]] * 5):
 			func = partial(tokenise, strict=comb[0], replace=comb[1],
-							diphtongs=comb[2], tones=comb[3], unknown=comb[4])
+							diphthongs=comb[2], tones=comb[3], unknown=comb[4])
 
 			self.assertEqual(func('prɤst na krak'), ['p', 'r', 'ɤ', 's', 't', 'n', 'a', 'k', 'r', 'a', 'k'])
 			self.assertEqual(func('prɤst_na_krak'), ['p', 'r', 'ɤ', 's', 't', 'n', 'a', 'k', 'r', 'a', 'k'])
