@@ -108,6 +108,8 @@ other IPA packages
 
 - lingpy_ is a historical linguistics suite that includes an ipa2tokens_
   function.
+- loanpy_ is another historical linguistics suite which uses ``ipatok`` as a
+  dependency.
 - ipapy_ is a package for working with IPA strings.
 - ipalint_ provides a command-line tool for checking IPA datasets for errors
   and inconsistencies.
@@ -122,9 +124,10 @@ MIT. Do as you please and praise the snake gods.
 
 .. _`the 2015 revision`: https://www.internationalphoneticassociation.org/sites/default/files/phonsymbol.pdf
 .. _`modifier tone letter`: http://www.unicode.org/charts/PDF/UA700.pdf
-.. _`Cheese Shop`: https://pypi.python.org/pypi/ipatok
-.. _`lingpy`: https://pypi.python.org/pypi/lingpy
+.. _`Cheese Shop`: https://pypi.python.org/pypi/ipatok/
+.. _`lingpy`: https://pypi.python.org/pypi/lingpy/
 .. _`ipa2tokens`: http://lingpy.org/reference/lingpy.sequence.html#lingpy.sequence.sound_classes.ipa2tokens
-.. _`ipapy`: https://pypi.python.org/pypi/ipapy
-.. _`ipalint`: https://pypi.python.org/pypi/ipalint
-.. _`asjp`: https://pypi.python.org/pypi/asjp
+.. _`loanpy`: https://pypi.org/project/loanpy/
+.. _`ipapy`: https://pypi.python.org/pypi/ipapy/
+.. _`ipalint`: https://pypi.python.org/pypi/ipalint/
+.. _`asjp`: https://pypi.python.org/pypi/asjp/
