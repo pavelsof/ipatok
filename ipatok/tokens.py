@@ -178,11 +178,28 @@ def tokenise(string, strict=False, replace=False,
 
 	return output
 
+def clusterise(ipastring):
+    def merge(ipalist):
+        """merge subsequent consonants and vowels to clusters"""
+        tmp = []
+        it = iter(ipalist)
+        nextit = next(it)
+        for phon in ipalist:
+            phoncv = any(ipa.is_vowel(i) for i in phon)
+            while any(ipa.is_vowel(i) for i in nextit) != phoncv:
+                yield ''.join(tmp)
+                tmp = []
+                nextit = next(it)
+            tmp.append(phon)
+        yield ''.join(tmp)
+    return [i for i in merge(tokenise(ipastring)) if i]
+
 
 """
 Provide for the alternative spelling.
 """
 tokenize = tokenise
+clusterize = clusterise
 
 
 def replace_digits_with_chao(string, inverse=False):
