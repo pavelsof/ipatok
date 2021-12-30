@@ -68,9 +68,9 @@ are collapsed into a single Chao letter (e.g. ``55 → ˥``).
 unknown=False, merge=None)`` takes an IPA string and returns a list of consonant 
 and vowel clusters. Keyword arguments are identical as for ``tokenise``:
   
-  >>> from ipatok import clusterise
-  >>> clusterise("kiaːltaːʃ")
-  ['k', 'iaː', 'lt', 'aː', 'ʃ']
+>>> from ipatok import clusterise
+>>> clusterise("kiaːltaːʃ")
+['k', 'iaː', 'lt', 'aː', 'ʃ']
 
 
 pitfalls
