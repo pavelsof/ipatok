@@ -72,6 +72,7 @@ and vowel clusters. Keyword arguments are identical as for ``tokenise``:
 >>> clusterise("kiaːltaːʃ")
 ['k', 'iaː', 'lt', 'aː', 'ʃ']
 
+``clusterize`` is an alias for ``clusterise``
 
 pitfalls
 ========
