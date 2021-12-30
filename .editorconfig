@@ -1,6 +1,13 @@
 root = true
 
-[*.py]
-indent_style = tab
-end_of_line = lf
+[*]
 charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+
+[*.tsv]
+indent_style = tab
+
+[*.{py,rst}]
+indent_style = space
+indent_size = 4
