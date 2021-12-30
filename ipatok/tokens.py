@@ -180,21 +180,23 @@ def tokenise(string, strict=False, replace=False,
     return output
 
 
-def clusterise(ipastring):
+def clusterise(string, strict=False, replace=False,
+               diphthongs=False, tones=False, unknown=False, merge=None):
     def merge(ipalist):
         """merge subsequent consonants and vowels to clusters"""
         tmp = []
         it = iter(ipalist)
         nextit = next(it)
-        for phon in ipalist:
-            phoncv = any(ipa.is_vowel(i) for i in phon)
-            while any(ipa.is_vowel(i) for i in nextit) != phoncv:
+        for char in ipalist:
+            charcv = any(ipa.is_vowel(i) for i in char)
+            while any(ipa.is_vowel(i) for i in nextit) != charcv:
                 yield ''.join(tmp)
                 tmp = []
                 nextit = next(it)
-            tmp.append(phon)
+            tmp.append(char)
         yield ''.join(tmp)
-    return [i for i in merge(list(tokenise(ipastring))) if i]
+
+    return [i for i in merge(tokenise(string, list(locals().values()))) if i]
 
 """
 Provide for the alternative spelling.
