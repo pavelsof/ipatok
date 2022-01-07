@@ -1,16 +1,10 @@
-# private stuff
-meta/*
+# virtual env
+/venv
 
-# python packaging
-build/*
-dist/*
-ipatok.egg-info/*
-.eggs/*
+# packaging and distributing
+/ipatok.egg-info
+/build
+/dist
 
-# unit testing
-.coverage
-.hypothesis/*
-
-# development
+# temporary files
 *.pyc
-*.swp
