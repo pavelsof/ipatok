@@ -59,7 +59,9 @@ def are_diphthong(tokenA, tokenB):
 
     Helper for tokenise(string, ..).
     """
-    def is_short(token): return '◌̯'[1] in token
+    def is_short(token):
+        return '◌̯'[1] in token
+
     subtokens = []
 
     for char in tokenA+tokenB:
@@ -183,7 +185,7 @@ def tokenise(string, strict=False, replace=False,
 def clusterise(string, strict=False, replace=False,
                diphthongs=False, tones=False, unknown=False, merge=None):
     def merge(ipalist):
-        """merge subsequent consonants and vowels to clusters"""
+        """Merge subsequent consonants and vowels to clusters."""
         tmp = []
         it = iter(ipalist)
         nextit = next(it)
@@ -197,12 +199,6 @@ def clusterise(string, strict=False, replace=False,
         yield ''.join(tmp)
 
     return [i for i in merge(tokenise(string, list(locals().values()))) if i]
-
-"""
-Provide for the alternative spelling.
-"""
-tokenize = tokenise
-clusterize = clusterise
 
 
 def replace_digits_with_chao(string, inverse=False):
@@ -228,3 +224,10 @@ def replace_digits_with_chao(string, inverse=False):
         if not (index and char in chao_letters and string[index-1] == char)])
 
     return string
+
+
+"""
+Provide for the alternative spellings.
+"""
+tokenize = tokenise
+clusterize = clusterise

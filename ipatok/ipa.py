@@ -209,7 +209,7 @@ def replace_substitutes(string):
 
 
 """
-Load the chart
+Load the chart.
 """
 chart = Chart()
 chart.load_ipa(IPA_CHART_PATH)

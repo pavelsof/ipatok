@@ -4,8 +4,9 @@ from unittest import TestCase
 from unittest.mock import patch
 
 from ipatok.tokens import (
-        normalise, group, are_diphthong, tokenise, replace_digits_with_chao,
-        clusterise)
+    normalise, group, are_diphthong, tokenise, clusterise,
+    replace_digits_with_chao
+)
 
 
 class TokensTestCase(TestCase):
@@ -45,18 +46,24 @@ class TokensTestCase(TestCase):
         flag values.
         """
         for comb in product(*[[True, False]] * 5):
-            func = partial(tokenise, strict=comb[0], replace=comb[1],
-                           diphthongs=comb[2], tones=comb[3], unknown=comb[4])
+            func = partial(
+                tokenise, strict=comb[0], replace=comb[1], diphthongs=comb[2],
+                tones=comb[3], unknown=comb[4]
+            )
 
             self.assertEqual(func('miq͡χː'), ['m', 'i', 'q͡χː'])
-            self.assertEqual(func('ʃːjeq͡χːʼjer'),
-                             ['ʃː', 'j', 'e', 'q͡χːʼ', 'j', 'e', 'r'])
+            self.assertEqual(
+                func('ʃːjeq͡χːʼjer'),
+                ['ʃː', 'j', 'e', 'q͡χːʼ', 'j', 'e', 'r']
+            )
             self.assertEqual(func('t͡ɬʼibil'), ['t͡ɬʼ', 'i', 'b', 'i', 'l'])
             self.assertEqual(func('ɬalkʼ'), ['ɬ', 'a', 'l', 'kʼ'])
 
             self.assertEqual(func('lit͡sɛ'), ['l', 'i', 't͡s', 'ɛ'])
-            self.assertEqual(func('t͡ʃɛʎust'),
-                             ['t͡ʃ', 'ɛ', 'ʎ', 'u', 's', 't'])
+            self.assertEqual(
+                func('t͡ʃɛʎust'),
+                ['t͡ʃ', 'ɛ', 'ʎ', 'u', 's', 't']
+            )
             self.assertEqual(func('dirʲa'), ['d', 'i', 'rʲ', 'a'])
             self.assertEqual(func('ut͡ʃa sɛ'), ['u', 't͡ʃ', 'a', 's', 'ɛ'])
 
@@ -72,23 +79,34 @@ class TokensTestCase(TestCase):
         is False, regardless of the other flags' values.
         """
         for comb in product(*[[True, False]] * 4):
-            func = partial(tokenise, replace=comb[0],
-                           diphthongs=comb[1], tones=comb[2], unknown=comb[3])
+            func = partial(
+                tokenise, replace=comb[0], diphthongs=comb[1], tones=comb[2],
+                unknown=comb[3]
+            )
 
             with self.assertRaises(ValueError):
                 func('ʷəˈʁʷa', strict=True)
-            self.assertEqual(func('ʷəˈʁʷa', strict=False),
-                             ['ʷ', 'ə', 'ʁʷ', 'a'])
+
+            self.assertEqual(
+                func('ʷəˈʁʷa', strict=False),
+                ['ʷ', 'ə', 'ʁʷ', 'a']
+            )
 
             with self.assertRaises(ValueError):
                 func('t͡ɕˀet͡ɕeŋ', strict=True)
-            self.assertEqual(func('t͡ɕˀet͡ɕeŋ', strict=False),
-                             ['t͡ɕˀ', 'e', 't͡ɕ', 'e', 'ŋ'])
+
+            self.assertEqual(
+                func('t͡ɕˀet͡ɕeŋ', strict=False),
+                ['t͡ɕˀ', 'e', 't͡ɕ', 'e', 'ŋ']
+            )
 
             with self.assertRaises(ValueError):
                 func('kat͡ɕˀaɹ', strict=True)
-            self.assertEqual(func('kat͡ɕˀaɹ', strict=False),
-                             ['k', 'a', 't͡ɕˀ', 'a', 'ɹ'])
+
+            self.assertEqual(
+                func('kat͡ɕˀaɹ', strict=False),
+                ['k', 'a', 't͡ɕˀ', 'a', 'ɹ']
+            )
 
     def test_tokenise_replace(self):
         """
@@ -96,17 +114,24 @@ class TokensTestCase(TestCase):
         should pass the strictness check only if replace is True.
         """
         for comb in product(*[[True, False]] * 3):
-            func = partial(tokenise, strict=True,
-                           diphthongs=comb[0], tones=comb[1], unknown=comb[2])
+            func = partial(
+                tokenise, strict=True, diphthongs=comb[0], tones=comb[1],
+                unknown=comb[2]
+            )
 
             with self.assertRaises(ValueError):
                 func('t͡ʃɛɫɔ', replace=False)
-            self.assertEqual(func('t͡ʃɛɫɔ', replace=True),
-                             ['t͡ʃ', 'ɛ', 'l̴', 'ɔ'])
+
+            self.assertEqual(
+                func('t͡ʃɛɫɔ', replace=True), ['t͡ʃ', 'ɛ', 'l̴', 'ɔ']
+            )
 
             with self.assertRaises(ValueError):
                 func('ɫuna', replace=False)
-            self.assertEqual(func('ɫuna', replace=True), ['l̴', 'u', 'n', 'a'])
+
+            self.assertEqual(
+                func('ɫuna', replace=True), ['l̴', 'u', 'n', 'a']
+            )
 
     def test_tokenise_diphthongs(self):
         """
@@ -114,32 +139,49 @@ class TokensTestCase(TestCase):
         diphthongs flag, regardless of the other flags' values.
         """
         for comb in product(*[[True, False]] * 4):
-            func = partial(tokenise, strict=comb[0],
-                           replace=comb[1], tones=comb[2], unknown=comb[3])
+            func = partial(
+                tokenise, strict=comb[0], replace=comb[1], tones=comb[2],
+                unknown=comb[3]
+            )
 
-            self.assertEqual(func('t͡saɪ̯çən', diphthongs=False),
-                             ['t͡s', 'a', 'ɪ̯', 'ç', 'ə', 'n'])
-            self.assertEqual(func('t͡saɪ̯çən', diphthongs=True),
-                             ['t͡s', 'aɪ̯', 'ç', 'ə', 'n'])
+            self.assertEqual(
+                func('t͡saɪ̯çən', diphthongs=False),
+                ['t͡s', 'a', 'ɪ̯', 'ç', 'ə', 'n']
+            )
+            self.assertEqual(
+                func('t͡saɪ̯çən', diphthongs=True),
+                ['t͡s', 'aɪ̯', 'ç', 'ə', 'n']
+            )
 
-            self.assertEqual(func('hɛɐ̯t͡s', diphthongs=False),
-                             ['h', 'ɛ', 'ɐ̯', 't͡s'])
-            self.assertEqual(func('hɛɐ̯t͡s', diphthongs=True),
-                             ['h', 'ɛɐ̯', 't͡s'])
+            self.assertEqual(
+                func('hɛɐ̯t͡s', diphthongs=False), ['h', 'ɛ', 'ɐ̯', 't͡s']
+            )
+            self.assertEqual(
+                func('hɛɐ̯t͡s', diphthongs=True), ['h', 'ɛɐ̯', 't͡s']
+            )
 
-            self.assertEqual(func('moːɐ̯', diphthongs=False),
-                             ['m', 'oː', 'ɐ̯'])
-            self.assertEqual(func('moːɐ̯', diphthongs=True), ['m', 'oːɐ̯'])
+            self.assertEqual(
+                func('moːɐ̯', diphthongs=False), ['m', 'oː', 'ɐ̯']
+            )
+            self.assertEqual(
+                func('moːɐ̯', diphthongs=True), ['m', 'oːɐ̯']
+            )
 
-            outx = ['a', 'ɪ̯', 'ç', 'h', 'œ', 'ɐ̯', 'n', 'ç', 'ə', 'n']
-            outy = ['aɪ̯', 'ç', 'h', 'œɐ̯', 'n', 'ç', 'ə', 'n']
-            self.assertEqual(func('aɪ̯çhœɐ̯nçən', diphthongs=False), outx)
-            self.assertEqual(func('aɪ̯çhœɐ̯nçən', diphthongs=True), outy)
+            self.assertEqual(
+                func('aɪ̯çhœɐ̯nçən', diphthongs=False),
+                ['a', 'ɪ̯', 'ç', 'h', 'œ', 'ɐ̯', 'n', 'ç', 'ə', 'n']
+            )
+            self.assertEqual(
+                func('aɪ̯çhœɐ̯nçən', diphthongs=True),
+                ['aɪ̯', 'ç', 'h', 'œɐ̯', 'n', 'ç', 'ə', 'n']
+            )
 
-            self.assertEqual(func('klaʊ̯ə', diphthongs=False),
-                             ['k', 'l', 'a', 'ʊ̯', 'ə'])
-            self.assertEqual(func('klaʊ̯ə', diphthongs=True),
-                             ['k', 'l', 'aʊ̯', 'ə'])
+            self.assertEqual(
+                func('klaʊ̯ə', diphthongs=False), ['k', 'l', 'a', 'ʊ̯', 'ə']
+            )
+            self.assertEqual(
+                func('klaʊ̯ə', diphthongs=True), ['k', 'l', 'aʊ̯', 'ə']
+            )
 
     def test_tokenise_tones(self):
         """
@@ -147,14 +189,19 @@ class TokensTestCase(TestCase):
         on the tones flag, regardless of other flags' values.
         """
         for comb in product(*[[True, False]] * 4):
-            func = partial(tokenise, strict=comb[0],
-                           replace=comb[1], diphthongs=comb[2],
-                           unknown=comb[3])
+            func = partial(
+                tokenise, strict=comb[0], replace=comb[1], diphthongs=comb[2],
+                unknown=comb[3]
+            )
 
-            self.assertEqual(func('t͡sɯ˦ɕy˦', tones=True),
-                             ['t͡s', 'ɯ', '˦', 'ɕ', 'y', '˦'])
-            self.assertEqual(func('t͡sɯ˦ɕy˦', tones=False),
-                             ['t͡s', 'ɯ', 'ɕ', 'y'])
+            self.assertEqual(
+                func('t͡sɯ˦ɕy˦', tones=True),
+                ['t͡s', 'ɯ', '˦', 'ɕ', 'y', '˦']
+            )
+            self.assertEqual(
+                func('t͡sɯ˦ɕy˦', tones=False),
+                ['t͡s', 'ɯ', 'ɕ', 'y']
+            )
 
             self.assertEqual(func('˨˩˦', tones=True), ['˨˩˦'])
             self.assertEqual(func('˨˩˦', tones=False), [])
@@ -168,9 +215,9 @@ class TokensTestCase(TestCase):
         and should be otherwise tokenised only if tones is True.
         """
         for comb in product(*[[True, False]] * 3):
-            func = partial(tokenise,
-                           replace=comb[0], diphthongs=comb[1],
-                           unknown=comb[2])
+            func = partial(
+                tokenise, replace=comb[0], diphthongs=comb[1], unknown=comb[2]
+            )
 
             for tones in [True, False]:
                 with self.assertRaises(ValueError):
@@ -185,8 +232,9 @@ class TokensTestCase(TestCase):
         which case they should be ignored depending on the unknown flag.
         """
         for comb in product(*[[True, False]] * 3):
-            func = partial(tokenise, replace=comb[0], diphthongs=comb[1],
-                           tones=comb[2])
+            func = partial(
+                tokenise, replace=comb[0], diphthongs=comb[1], tones=comb[2]
+            )
 
             for unknown in [True, False]:
                 with self.assertRaises(ValueError):
@@ -201,18 +249,28 @@ class TokensTestCase(TestCase):
         regardless of the flag values.
         """
         for comb in product(*[[True, False]] * 5):
-            func = partial(tokenise, strict=comb[0], replace=comb[1],
-                           diphthongs=comb[2], tones=comb[3], unknown=comb[4])
+            func = partial(
+                tokenise, strict=comb[0], replace=comb[1], diphthongs=comb[2],
+                tones=comb[3], unknown=comb[4]
+            )
 
-            out3 = ['p', 'r', 'ɤ', 's', 't', 'n', 'a', 'k', 'r', 'a', 'k']
-            self.assertEqual(func('prɤst na krak'), out3)
-            out4 = ['p', 'r', 'ɤ', 's', 't', 'n', 'a', 'k', 'r', 'a', 'k']
-            self.assertEqual(func('prɤst_na_krak'), out4)
+            self.assertEqual(
+                func('prɤst na krak'),
+                ['p', 'r', 'ɤ', 's', 't', 'n', 'a', 'k', 'r', 'a', 'k']
+            )
+            self.assertEqual(
+                func('prɤst_na_krak'),
+                ['p', 'r', 'ɤ', 's', 't', 'n', 'a', 'k', 'r', 'a', 'k']
+            )
 
-            out5 = ['e', 't', 'ɬ', 'ə', 't', 'i', 't', 'e']
-            self.assertEqual(func('etɬə tite'), out5)
-            out6 = ['e', 't', 'ɬ', 'ə', 't', 'i', 't', 'e']
-            self.assertEqual(func('etɬə_tite'), out6)
+            self.assertEqual(
+                func('etɬə tite'),
+                ['e', 't', 'ɬ', 'ə', 't', 'i', 't', 'e']
+            )
+            self.assertEqual(
+                func('etɬə_tite'),
+                ['e', 't', 'ɬ', 'ə', 't', 'i', 't', 'e']
+            )
 
     def test_replace_digits_with_chao(self):
         """
@@ -222,23 +280,33 @@ class TokensTestCase(TestCase):
         self.assertEqual(replace_digits_with_chao('ɕiŋ⁵⁵ɕiŋ²'), 'ɕiŋ˥ɕiŋ˨')
         self.assertEqual(replace_digits_with_chao('ɕiŋ55ɕiŋ2'), 'ɕiŋ˥ɕiŋ˨')
 
-        self.assertEqual(replace_digits_with_chao('ɕia⁵¹ɕyɛ²¹⁴'),
-                         'ɕia˥˩ɕyɛ˨˩˦')
-        self.assertEqual(replace_digits_with_chao('ɕia51ɕyɛ214'),
-                         'ɕia˥˩ɕyɛ˨˩˦')
+        self.assertEqual(
+            replace_digits_with_chao('ɕia⁵¹ɕyɛ²¹⁴'), 'ɕia˥˩ɕyɛ˨˩˦'
+        )
+        self.assertEqual(
+            replace_digits_with_chao('ɕia51ɕyɛ214'), 'ɕia˥˩ɕyɛ˨˩˦'
+        )
 
-        self.assertEqual(replace_digits_with_chao('ɕiŋ⁵⁵ɕiŋ²', inverse=True),
-                         'ɕiŋ˩ɕiŋ˦')
-        self.assertEqual(replace_digits_with_chao('ɕiŋ55ɕiŋ2', inverse=True),
-                         'ɕiŋ˩ɕiŋ˦')
+        self.assertEqual(
+            replace_digits_with_chao('ɕiŋ⁵⁵ɕiŋ²', inverse=True), 'ɕiŋ˩ɕiŋ˦'
+        )
+        self.assertEqual(
+            replace_digits_with_chao('ɕiŋ55ɕiŋ2', inverse=True), 'ɕiŋ˩ɕiŋ˦'
+        )
 
-        self.assertEqual(replace_digits_with_chao('ɕia⁵¹ɕyɛ²¹⁴', inverse=True),
-                         'ɕia˩˥ɕyɛ˦˥˨')
-        self.assertEqual(replace_digits_with_chao('ɕia51ɕyɛ214', inverse=True),
-                         'ɕia˩˥ɕyɛ˦˥˨')
+        self.assertEqual(
+            replace_digits_with_chao('ɕia⁵¹ɕyɛ²¹⁴', inverse=True),
+            'ɕia˩˥ɕyɛ˦˥˨'
+        )
+        self.assertEqual(
+            replace_digits_with_chao('ɕia51ɕyɛ214', inverse=True),
+            'ɕia˩˥ɕyɛ˦˥˨'
+        )
 
     def test_clusterise(self):
         with patch("ipatok.tokenise") as tokenise_mock:
             tokenise_mock.return_value = ['k', 'i', 'aː', 'l', 't', 'aː', 'ʃ']
-            self.assertEqual(clusterise("kiaːltaːʃ"),
-                             ['k', 'iaː', 'lt', 'aː', 'ʃ'])
+
+            self.assertEqual(
+                clusterise("kiaːltaːʃ"), ['k', 'iaː', 'lt', 'aː', 'ʃ']
+            )

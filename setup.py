@@ -16,7 +16,7 @@ with open(os.path.join(BASE_DIR, 'ipatok/__version__.py')) as f:
 
 setup(
     name='ipatok',
-    version=VERSION,
+    version=VERSION,  # noqa
 
     description='IPA tokeniser',
     long_description=README,
