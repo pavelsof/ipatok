@@ -5,4 +5,5 @@ wheel==0.37.1
 twine==3.7.1
 
 # other tools
+flake8==4.0.1
 pip-tools==6.4.0

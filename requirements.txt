@@ -22,6 +22,8 @@ cryptography==36.0.1
     # via secretstorage
 docutils==0.18.1
     # via readme-renderer
+flake8==4.0.1
+    # via -r requirements.in
 idna==3.3
     # via requests
 importlib-metadata==4.10.0
@@ -34,6 +36,8 @@ jeepney==0.7.1
     #   secretstorage
 keyring==23.5.0
     # via twine
+mccabe==0.6.1
+    # via flake8
 packaging==21.3
     # via bleach
 pep517==0.12.0
@@ -42,8 +46,12 @@ pip-tools==6.4.0
     # via -r requirements.in
 pkginfo==1.8.2
     # via twine
+pycodestyle==2.8.0
+    # via flake8
 pycparser==2.21
     # via cffi
+pyflakes==2.4.0
+    # via flake8
 pygments==2.11.2
     # via readme-renderer
 pyparsing==3.0.6
