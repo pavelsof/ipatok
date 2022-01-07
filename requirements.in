@@ -1,0 +1,8 @@
+-e file:.
+
+# packaging and distributing
+wheel==0.37.1
+twine==3.7.1
+
+# other tools
+pip-tools==6.4.0
