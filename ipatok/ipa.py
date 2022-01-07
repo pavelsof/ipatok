@@ -83,7 +83,8 @@ def ensure_single_char(func):
         if not isinstance(args[0], str) or len(args[0]) != 1:
             raise ValueError((
                 'This function should be invoked with a string of length one '
-                'as its first argument'))
+                'as its first argument'
+            ))
         return func(*args, **kwargs)
 
     return wrapper

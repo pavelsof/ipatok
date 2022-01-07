@@ -120,15 +120,18 @@ def tokenise_word(string,
                 tokens[-1] += char
             else:
                 if strict:
-                    raise ValueError(f'string starts with diacritic: {string}')
+                    raise ValueError(
+                        f'The string starts with a diacritic: {string}'
+                    )
                 else:
                     tokens.append(char)
 
         elif tones and ipa.is_tone(char, strict):
             if unicodedata.combining(char):
                 if not tokens:
-                    msg = 'string starts with accent mark: {string}'
-                    raise ValueError(msg)
+                    raise ValueError(
+                        f'The string starts with an accent mark: {string}'
+                    )
                 tokens[-1] += char
             elif tokens and ipa.is_tone(tokens[-1][-1], strict):
                 tokens[-1] += char
@@ -140,8 +143,9 @@ def tokenise_word(string,
 
         else:
             if strict:
-                msg = f'Unrecognised char: {char} ({ unicodedata.name(char)})'
-                raise ValueError(msg)
+                raise ValueError(
+                    f'Unrecognised char: {char} ({ unicodedata.name(char)})'
+                )
             elif unknown:
                 tokens.append(char)
             else:
