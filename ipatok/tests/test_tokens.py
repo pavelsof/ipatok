@@ -304,9 +304,15 @@ class TokensTestCase(TestCase):
         )
 
     def test_clusterise(self):
-        with patch("ipatok.tokenise") as tokenise_mock:
+        with patch("ipatok.tokens.tokenise") as tokenise_mock:
             tokenise_mock.return_value = ['k', 'i', 'aː', 'l', 't', 'aː', 'ʃ']
 
             self.assertEqual(
                 clusterise("kiaːltaːʃ"), ['k', 'iaː', 'lt', 'aː', 'ʃ']
             )
+            tokenise_mock.assert_called_with('kiaːltaːʃ', False, False, False, False, False, None)
+
+            self.assertEqual(
+                clusterise("kiaːltaːʃ", True, True, True, True, True, None), ['k', 'iaː', 'lt', 'aː', 'ʃ']
+            )
+            tokenise_mock.assert_called_with('kiaːltaːʃ', True, True, True, True, True, None)
