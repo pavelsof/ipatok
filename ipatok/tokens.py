@@ -188,7 +188,7 @@ def tokenise(string, strict=False, replace=False,
 
 def clusterise(string, strict=False, replace=False,
                diphthongs=False, tones=False, unknown=False, merge=None):
-    def merge(ipalist):
+    def groupit(ipalist):
         """Merge subsequent consonants and vowels to clusters."""
         tmp = []
         it = iter(ipalist)
@@ -202,7 +202,8 @@ def clusterise(string, strict=False, replace=False,
             tmp.append(char)
         yield ''.join(tmp)
 
-    return [i for i in merge(tokenise(string, list(locals().values()))) if i]
+    args = list(locals().values())[:-1]  # last arg would be groupit()
+    return [i for i in groupit(tokenise(*args)) if i]
 
 
 def replace_digits_with_chao(string, inverse=False):
