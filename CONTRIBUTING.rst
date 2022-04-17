@@ -25,7 +25,7 @@ project setup
     pip-sync
 
     # run the tests
-    python setup.py test
+    python -m unittest
 
     # check for PEP8 issues
     flake8
@@ -34,6 +34,8 @@ project setup
 conventions
 ===========
 
-For file encoding, newlines, indentation: please use the ``.editorconfig`` rules (`take a look here <https://editorconfig.org/>`_ if this is new for you).
+For file encoding, newlines, indentation: please use the ``.editorconfig``
+rules (`take a look here <https://editorconfig.org/>`_ if this is new for you).
 
-For coding style: please follow `PEP8 <https://www.python.org/dev/peps/pep-0008/>`_.
+For coding style: please follow `PEP8
+<https://www.python.org/dev/peps/pep-0008/>`_.
