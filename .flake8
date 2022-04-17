@@ -7,7 +7,7 @@ extend_exclude =
 	./venv,
 
 	# the build dir
-	./build
+	./dist
 
 # print the source code generating the error
 show_source = True

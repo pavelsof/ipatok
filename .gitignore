@@ -1,10 +1,8 @@
 # virtual env
 /venv
 
-# packaging and distributing
-/ipatok.egg-info
-/build
+# packaging
 /dist
 
-# temporary files
+# bytecode files
 *.pyc
