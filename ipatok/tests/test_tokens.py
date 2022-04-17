@@ -304,15 +304,29 @@ class TokensTestCase(TestCase):
         )
 
     def test_clusterise(self):
-        with patch("ipatok.tokens.tokenise") as tokenise_mock:
+        self.assertEqual(
+            clusterise('kiaːltaːʃ'), ['k', 'iaː', 'lt', 'aː', 'ʃ']
+        )
+        self.assertEqual(clusterise('sɫɤnt͡sɛ'), ['sɫ', 'ɤ', 'nt͡s', 'ɛ'])
+
+    def test_clusterise_arguments_are_forwarded(self):
+        """
+        Keyword arguments given to clusterise should be forwarded to tokenise.
+        """
+        with patch('ipatok.tokens.tokenise') as tokenise_mock:
             tokenise_mock.return_value = ['k', 'i', 'aː', 'l', 't', 'aː', 'ʃ']
 
-            self.assertEqual(
-                clusterise("kiaːltaːʃ"), ['k', 'iaː', 'lt', 'aː', 'ʃ']
+            clusterise('kiaːltaːʃ')
+            tokenise_mock.assert_called_with(
+                'kiaːltaːʃ', False, False, False, False, False, None
             )
-            tokenise_mock.assert_called_with('kiaːltaːʃ', False, False, False, False, False, None)
 
-            self.assertEqual(
-                clusterise("kiaːltaːʃ", True, True, True, True, True, None), ['k', 'iaː', 'lt', 'aː', 'ʃ']
+            clusterise('kiaːltaːʃ', True, True, True, True, True, None)
+            tokenise_mock.assert_called_with(
+                'kiaːltaːʃ', True, True, True, True, True, None
             )
-            tokenise_mock.assert_called_with('kiaːltaːʃ', True, True, True, True, True, None)
+
+            clusterise('kiaːltaːʃ', merge=None, unknown=True)
+            tokenise_mock.assert_called_with(
+                'kiaːltaːʃ', False, False, False, False, True, None
+            )

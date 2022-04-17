@@ -188,6 +188,14 @@ def tokenise(string, strict=False, replace=False,
 
 def clusterise(string, strict=False, replace=False,
                diphthongs=False, tones=False, unknown=False, merge=None):
+    """
+    Tokenise an IPA string and return a list of consonant and vowel clusters.
+    Raise ValueError if there is a problem.
+
+    Forward the keyword arguments to tokenise.
+
+    Part of ipatok's public API.
+    """
     def groupit(ipalist):
         """Merge subsequent consonants and vowels to clusters."""
         tmp = []
