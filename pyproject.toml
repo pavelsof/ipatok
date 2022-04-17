@@ -1,0 +1,32 @@
+[build-system]
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "ipatok"
+description = "IPA tokeniser"
+
+readme = "README.rst"
+
+authors = [
+    {name = "pavelsof", email = "mail@pavelsof.com"},
+]
+
+license = {file = "LICENSE"}
+
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Topic :: Text Processing :: Linguistic",
+]
+keywords = ["IPA", "tokeniser", "tokenizer"]
+
+dynamic = ["version"]
+
+[project.urls]
+Home = "https://github.com/pavelsof/ipatok"
+Tracker = "https://github.com/pavelsof/ipatok/issues"
+Source = "https://github.com/pavelsof/ipatok"
+Changelog = "https://github.com/pavelsof/ipatok/blob/master/CHANGELOG.rst"
