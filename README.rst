@@ -64,15 +64,16 @@ are collapsed into a single Chao letter (e.g. ``55 → ˥``).
 ['ɕ', 'i', 'a', '˥˩', 'ɕ', 'y', 'ɛ', '˨˩˦']
 
 
-``clusterise(string, strict=False, replace=False, diphthongs=False, tones=False,
-unknown=False, merge=None)`` takes an IPA string and returns a list of consonant 
-and vowel clusters. Keyword arguments are identical as for ``tokenise``:
-  
+``clusterise(string, strict=False, replace=False, diphthongs=False,
+tones=False, unknown=False, merge=None)`` takes an IPA string and lists its
+consonant and vowel clusters. The keyword arguments are identical as for
+``tokenise``:
+
 >>> from ipatok import clusterise
 >>> clusterise("kiaːltaːʃ")
 ['k', 'iaː', 'lt', 'aː', 'ʃ']
 
-``clusterize`` is an alias for ``clusterise``
+``clusterize`` is an alias for ``clusterise``.
 
 pitfalls
 ========
