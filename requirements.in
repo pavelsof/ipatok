@@ -1,9 +1,9 @@
+# ipatok itself
 -e file:.
 
-# packaging and distributing
-wheel==0.37.1
-twine==3.7.1
+# packaging
+flit
 
 # other tools
-flake8==4.0.1
-pip-tools==6.4.0
+flake8
+pip-tools
