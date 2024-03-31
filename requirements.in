@@ -1,9 +1,11 @@
 # ipatok itself
 -e file:.
 
+# handling dependencies
+pip-tools
+
+# code linting
+ruff
+
 # packaging
 flit
-
-# other tools
-flake8
-pip-tools

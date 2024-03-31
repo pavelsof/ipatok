@@ -16,30 +16,24 @@ click==8.1.7
     # via pip-tools
 docutils==0.20.1
     # via flit
-flake8==7.0.0
-    # via -r requirements.in
 flit==3.9.0
     # via -r requirements.in
 flit-core==3.9.0
     # via flit
 idna==3.6
     # via requests
-mccabe==0.7.0
-    # via flake8
 packaging==24.0
     # via build
 pip-tools==7.4.1
     # via -r requirements.in
-pycodestyle==2.11.1
-    # via flake8
-pyflakes==3.2.0
-    # via flake8
 pyproject-hooks==1.0.0
     # via
     #   build
     #   pip-tools
 requests==2.31.0
     # via flit
+ruff==0.3.4
+    # via -r requirements.in
 tomli-w==1.0.0
     # via flit
 urllib3==2.2.1
