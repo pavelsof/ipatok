@@ -59,12 +59,13 @@ def are_diphthong(tokenA, tokenB):
 
     Helper for tokenise(string, ..).
     """
+
     def is_short(token):
         return '◌̯'[1] in token
 
     subtokens = []
 
-    for char in tokenA+tokenB:
+    for char in tokenA + tokenB:
         if ipa.is_vowel(char):
             subtokens.append(char)
         elif ipa.is_diacritic(char) or ipa.is_length(char):
@@ -81,8 +82,9 @@ def are_diphthong(tokenA, tokenB):
     return False
 
 
-def tokenise_word(string,
-                  strict=False, replace=False, tones=False, unknown=False):
+def tokenise_word(
+    string, strict=False, replace=False, tones=False, unknown=False
+):
     """
     Tokenise the string into a list of tokens or raise ValueError if it cannot
     be tokenised (relatively) unambiguously. The string should not include
@@ -105,7 +107,7 @@ def tokenise_word(string,
 
     for index, char in enumerate(string):
         if ipa.is_letter(char, strict):
-            if tokens and ipa.is_tie_bar(string[index-1]):
+            if tokens and ipa.is_tie_bar(string[index - 1]):
                 tokens[-1] += char
             else:
                 tokens.append(char)
@@ -154,8 +156,15 @@ def tokenise_word(string,
     return tokens
 
 
-def tokenise(string, strict=False, replace=False,
-             diphthongs=False, tones=False, unknown=False, merge=None):
+def tokenise(
+    string,
+    strict=False,
+    replace=False,
+    diphthongs=False,
+    tones=False,
+    unknown=False,
+    merge=None,
+):
     """
     Tokenise an IPA string into a list of tokens. Raise ValueError if there is
     a problem; if strict=True, this includes the string not being compliant to
@@ -186,8 +195,15 @@ def tokenise(string, strict=False, replace=False,
     return output
 
 
-def clusterise(string, strict=False, replace=False,
-               diphthongs=False, tones=False, unknown=False, merge=None):
+def clusterise(
+    string,
+    strict=False,
+    replace=False,
+    diphthongs=False,
+    tones=False,
+    unknown=False,
+    merge=None,
+):
     """
     Tokenise an IPA string and return a list of consonant and vowel clusters.
     Raise ValueError if there is a problem.
@@ -196,6 +212,7 @@ def clusterise(string, strict=False, replace=False,
 
     Part of ipatok's public API.
     """
+
     def groupit(ipalist):
         """Merge subsequent consonants and vowels to clusters."""
         tmp = []
@@ -232,9 +249,11 @@ def replace_digits_with_chao(string, inverse=False):
     string = string.translate(str.maketrans('¹²³⁴⁵', '12345'))
     string = string.translate(str.maketrans('12345', chao_letters))
 
-    string = ''.join([
-        char for index, char in enumerate(string)
-        if not (index and char in chao_letters and string[index-1] == char)])
+    string = ''.join(
+        char
+        for index, char in enumerate(string)
+        if not (index and char in chao_letters and string[index - 1] == char)
+    )
 
     return string
 

@@ -30,3 +30,9 @@ Home = "https://github.com/pavelsof/ipatok"
 Tracker = "https://github.com/pavelsof/ipatok/issues"
 Source = "https://github.com/pavelsof/ipatok"
 Changelog = "https://github.com/pavelsof/ipatok/blob/master/CHANGELOG.rst"
+
+[tool.ruff]
+line-length = 79
+
+[tool.ruff.format]
+quote-style = "single"

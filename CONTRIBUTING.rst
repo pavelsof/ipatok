@@ -30,6 +30,9 @@ project setup
     # run the code linter
     ruff check
 
+    # run the code formatter
+    ruff format
+
 
 conventions
 ===========

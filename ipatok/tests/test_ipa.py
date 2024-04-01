@@ -2,13 +2,20 @@ from functools import partial
 from unittest import TestCase
 
 from ipatok.ipa import (
-    is_letter, is_vowel, is_tie_bar, is_diacritic, is_suprasegmental,
-    is_length, is_tone, get_precomposed_chars, replace_substitutes, chart
+    is_letter,
+    is_vowel,
+    is_tie_bar,
+    is_diacritic,
+    is_suprasegmental,
+    is_length,
+    is_tone,
+    get_precomposed_chars,
+    replace_substitutes,
+    chart,
 )
 
 
 class IpaTestCase(TestCase):
-
     def test_is_letter(self):
         """
         is_letter should always return True for IPA letters and False for other

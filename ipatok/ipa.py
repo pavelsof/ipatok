@@ -47,7 +47,8 @@ class Chart:
             '# diacritics': self.diacritics,
             '# suprasegmentals': self.suprasegmentals,
             '# lengths': self.lengths,
-            '# tones and word accents': self.tones}
+            '# tones and word accents': self.tones,
+        }
 
         curr_section = None
 
@@ -78,13 +79,15 @@ def ensure_single_char(func):
     Decorator that ensures that the first argument of the decorated function is
     a single character, i.e. a string of length one.
     """
+
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
         if not isinstance(args[0], str) or len(args[0]) != 1:
-            raise ValueError((
+            raise ValueError(
                 'This function should be invoked with a string of length one '
                 'as its first argument'
-            ))
+            )
+
         return func(*args, **kwargs)
 
     return wrapper
@@ -138,10 +141,12 @@ def is_diacritic(char, strict=True):
         return True
 
     if not strict:
-        return (unicodedata.category(char) in ['Lm', 'Mn', 'Sk']) \
-                and (not is_suprasegmental(char)) \
-                and (not is_tie_bar(char)) \
-                and (not 0xA700 <= ord(char) <= 0xA71F)
+        return (
+            unicodedata.category(char) in ['Lm', 'Mn', 'Sk']
+            and not is_suprasegmental(char)
+            and not is_tie_bar(char)
+            and not 0xA700 <= ord(char) <= 0xA71F
+        )
 
     return False
 
@@ -193,9 +198,11 @@ def get_precomposed_chars():
     Return the set of IPA characters that are defined in normal form C in the
     spec. As of 2015, this is only the voiceless palatal fricative, ç.
     """
-    return set([
-        letter for letter in chart.consonants
-        if unicodedata.normalize('NFD', letter) != letter])
+    return set(
+        letter
+        for letter in chart.consonants
+        if unicodedata.normalize('NFD', letter) != letter
+    )
 
 
 def replace_substitutes(string):
