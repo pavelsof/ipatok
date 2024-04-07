@@ -100,17 +100,11 @@ included in the output.
 installation
 ============
 
-This is a standard Python 3 package without dependencies. It is offered at the
-`Cheese Shop`_, so you can install it with pip::
+This is a Python 3 package without dependencies and it is offered at the
+`Cheese Shop`_::
 
+    # usually within a virtual environment
     pip install ipatok
-
-or, alternatively, you can clone this repo (safe to delete afterwards) and do::
-
-    python setup.py test
-    python setup.py install
-
-Of course, this could be happening within a virtualenv/venv as well.
 
 
 other IPA packages
@@ -118,8 +112,7 @@ other IPA packages
 
 - lingpy_ is a historical linguistics suite that includes an ipa2tokens_
   function.
-- loanpy_ is another historical linguistics suite which uses ``ipatok`` as a
-  dependency.
+- loanpy_ is another historical linguistics suite which works with IPA strings.
 - ipapy_ is a package for working with IPA strings.
 - ipalint_ provides a command-line tool for checking IPA datasets for errors
   and inconsistencies.
