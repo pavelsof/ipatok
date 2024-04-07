@@ -3,6 +3,13 @@ changelog
 =========
 
 
+0.4.2 (2024-04-07)
+------------------
+
+- Fixed ``tokenise`` to handle underscores as unknown symbols (`#5
+  <https://github.com/pavelsof/ipatok/issues/5>`_).
+
+
 0.4.1 (2022-04-17)
 ------------------
 
