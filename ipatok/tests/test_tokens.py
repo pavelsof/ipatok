@@ -245,20 +245,23 @@ class TokensTestCase(TestCase):
         """
         for comb in product(*[[True, False]] * 3):
             func = partial(
-                tokenise, replace=comb[0], diphthongs=comb[1], tones=comb[2]
+                tokenise,
+                replace=comb[0],
+                diphthongs=comb[1],
+                tones=comb[2],
             )
 
             for unknown in [True, False]:
                 with self.assertRaises(ValueError):
-                    func('-/$', strict=True, unknown=unknown)
+                    func('_-/$', strict=True, unknown=unknown)
 
-            self.assertEqual(func('-/$', unknown=True), ['-', '/', '$'])
-            self.assertEqual(func('-/$', unknown=False), [])
+            self.assertEqual(func('_-/$', unknown=True), ['_', '-', '/', '$'])
+            self.assertEqual(func('_-/$', unknown=False), [])
 
-    def test_tokenise_splits_words(self):
+    def test_tokenise_whitespace(self):
         """
-        Whitespace characters and underscores should serve as word boundaries,
-        regardless of the flag values.
+        Whitespace characters are expected to be used as word boundaries and
+        should be ignored regardless of the flag values.
         """
         for comb in product(*[[True, False]] * 5):
             func = partial(
@@ -275,16 +278,7 @@ class TokensTestCase(TestCase):
                 ['p', 'r', 'ɤ', 's', 't', 'n', 'a', 'k', 'r', 'a', 'k'],
             )
             self.assertEqual(
-                func('prɤst_na_krak'),
-                ['p', 'r', 'ɤ', 's', 't', 'n', 'a', 'k', 'r', 'a', 'k'],
-            )
-
-            self.assertEqual(
                 func('etɬə tite'),
-                ['e', 't', 'ɬ', 'ə', 't', 'i', 't', 'e'],
-            )
-            self.assertEqual(
-                func('etɬə_tite'),
                 ['e', 't', 'ɬ', 'ə', 't', 'i', 't', 'e'],
             )
 
