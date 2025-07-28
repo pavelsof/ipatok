@@ -146,7 +146,7 @@ def tokenise_word(
         else:
             if strict:
                 raise ValueError(
-                    f'Unrecognised char: {char} ({ unicodedata.name(char)})'
+                    f'Unrecognised char: {char} ({unicodedata.name(char)})'
                 )
             elif unknown:
                 tokens.append(char)
